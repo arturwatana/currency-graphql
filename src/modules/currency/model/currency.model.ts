@@ -4,4 +4,5 @@ export type CurrencyType = {
   high: string;
   low: string;
   create_date: string;
+  userId: string;
 };

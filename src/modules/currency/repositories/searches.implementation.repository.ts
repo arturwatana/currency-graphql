@@ -1,3 +1,4 @@
+import { usersRepository } from "../../..";
 import { CurrencyType } from "../model/currency.model";
 import { ISearchesRepository } from "./searches.repository";
 

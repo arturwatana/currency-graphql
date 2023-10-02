@@ -1,7 +1,17 @@
-import { IUser, User } from "../model/user.model";
-import { IUserRepository } from "./user.repository";
+import { IUser, User } from "../model/user.model.js";
+import { IUserRepository } from "./user.repository.js";
 
 export class UserMemoryRepository implements IUserRepository {
+  updateUser(user: User): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
+  getUserByUsername(username: string): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
+
+  getUserByToken(token: string): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
   items: User[] = [];
 
   async save(data: User): Promise<User> {

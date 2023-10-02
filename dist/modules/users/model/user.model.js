@@ -5,6 +5,7 @@ export class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.searches = [];
     }
     static create(data) {
         const user = new User(data);

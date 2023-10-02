@@ -1,4 +1,4 @@
-import { usesrRepository } from "../../../../index.js";
+import { usersRepository } from "../../../../index.js";
 export const users = () => {
-    return usesrRepository.showAll();
+    return usersRepository.showAll();
 };
