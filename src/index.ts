@@ -11,56 +11,10 @@ import { login } from "./modules/users/resolvers/mutation/login.mutation.js";
 import { UserMongooseRepository } from "./modules/users/repository/user.implementation.mongoose.js";
 import { main } from "./utils/db/mongoose.start.js";
 import { authService } from "./utils/auth/index.js";
-import { GraphQLError } from "graphql";
+import { typeDefs } from "./schemas.gql.js";
 
 export const searchesRepository = new SearchesMemoryRepository();
 export const usersRepository = new UserMongooseRepository();
-
-const typeDefs = `
-type Currency {
-  code: String!
-  name: String!
-  high: String!
-  low: String!
-  create_date: String!
-  user: User!
-}
-
-type User {
-  id: String!
-  username: String!
-  password: String!
-  email: String!
-  searches: [Currency!]!
-}
-
-input UserDTO {
-  username: String!
-  password: String!
-  email: String!
-}
-
-type LoginResDTO {
-  id: String!
-  username: String!
-  token: String!
-}
-
-input LoginUserDTO{
-  username: String!
-  password: String!
-}
-
-  type Query {
-    searches:[Currency!]!
-    users:[User!]!
-  }
-  type Mutation {
-    createCurrency(name: String): Currency
-    createUser(data: UserDTO): User
-    login(data: LoginUserDTO): LoginResDTO!
-  }
-`;
 
 const resolvers = {
   Query: { searches, users },
@@ -76,21 +30,10 @@ main().catch((err) => console.log(err));
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
   context: async ({ req, res }) => {
-    if (!req.headers.authorization) {
-      return;
-    }
-    const token = req.headers.authorization.split(" ")[1] || "";
+    const token = await authService.extractTokenFromHeader(req);
     const tokenIsValid = authService.verify(token, process.env.JWT_SECRET);
-    if (!tokenIsValid) {
-      throw new GraphQLError("User is not authenticated", {
-        extensions: {
-          code: "UNAUTHENTICATED",
-          http: { status: 401 },
-        },
-      });
-    }
-    const user =
-      (await usersRepository.getUserByUsername(tokenIsValid)) || null;
+
+    const user = await usersRepository.getUserByUsername(tokenIsValid);
 
     return { user };
   },

@@ -21,4 +21,12 @@ export class AuthJWT implements IAuth {
       return null;
     }
   }
+
+  async extractTokenFromHeader(req): Promise<string> {
+    if (!req.headers.authorization) {
+      return;
+    }
+    const token = req.headers.authorization.split(" ")[1] || "";
+    return token;
+  }
 }

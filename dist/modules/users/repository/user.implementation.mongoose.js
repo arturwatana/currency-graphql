@@ -26,10 +26,9 @@ export class UserMongooseRepository {
         return user || null;
     }
     async updateUser(user) {
-        const userupdated = await UserMongo.updateOne({
+        await UserMongo.updateOne({
             id: user.id,
         }, { searches: user.searches });
-        console.log(userupdated);
         const updatedUser = this.getUserByUsername(user.username);
         return updatedUser;
     }

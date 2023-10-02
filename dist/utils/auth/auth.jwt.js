@@ -19,4 +19,11 @@ export class AuthJWT {
             return null;
         }
     }
+    async extractTokenFromHeader(req) {
+        if (!req.headers.authorization) {
+            return;
+        }
+        const token = req.headers.authorization.split(" ")[1] || "";
+        return token;
+    }
 }
