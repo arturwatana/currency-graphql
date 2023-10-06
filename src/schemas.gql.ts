@@ -32,13 +32,16 @@ input LoginUserDTO{
   username: String!
   password: String!
 }
+input CurrencyReq {
+  name: String!
+}
 
   type Query {
     searches:[Currency!]!
     users:[User!]!
   }
   type Mutation {
-    createCurrency(name: String): Currency
+    createCurrency(data: CurrencyReq): Currency
     createUser(data: UserDTO): User
     login(data: LoginUserDTO): LoginResDTO!
   }

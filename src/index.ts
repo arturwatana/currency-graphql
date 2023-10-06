@@ -32,9 +32,7 @@ const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
     const token = await authService.extractTokenFromHeader(req);
     const tokenIsValid = authService.verify(token, process.env.JWT_SECRET);
-
     const user = await usersRepository.getUserByUsername(tokenIsValid);
-
     return { user };
   },
 });

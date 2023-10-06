@@ -14,6 +14,10 @@ export class User {
   email: string;
   searches: CurrencyType[];
   private constructor({ email, username, password }: IUser) {
+    if (!email || !username || !password) {
+      throw new Error("Ops, faltaram informacoes");
+    }
+
     this.id = randomUUID();
     this.username = username;
     this.email = email;
