@@ -1,7 +1,8 @@
 import { GraphQLError } from "graphql";
+import { CurrencyType } from "../../model/currency.model";
 import { usersRepository } from "../../../../index.js";
 
-export const searches = async (_, data, context) => {
+export const getLastSearchByName = async (_, { name }, context) => {
   if (!context.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {
@@ -9,10 +10,15 @@ export const searches = async (_, data, context) => {
         http: { status: 401 },
       },
     });
-
   const userSearches = (
     await usersRepository.getUserByUsername(context.user.username)
   ).searches;
 
-  return userSearches;
+  const lastSearch = userSearches
+    .reverse()
+    .find((search: CurrencyType) => search.code === name);
+
+  if (!lastSearch) throw new Error("Not found last search");
+
+  return lastSearch;
 };

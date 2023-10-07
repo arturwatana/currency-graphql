@@ -38,6 +38,7 @@ input CurrencyReq {
 
   type Query {
     searches:[Currency!]!
+    getLastSearchByName(name: String!):Currency!
     users:[User!]!
   }
   type Mutation {

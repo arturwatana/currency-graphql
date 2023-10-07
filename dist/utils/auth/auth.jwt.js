@@ -1,9 +1,14 @@
 import jwt from "jsonwebtoken";
 export class AuthJWT {
     sign(payload) {
-        const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
-            subject: payload.id,
-            expiresIn: "5m",
+        const payloadMapper = {
+            username: payload.username,
+            email: payload.email,
+            id: payload.id,
+        };
+        const token = jwt.sign({ payloadMapper }, process.env.JWT_SECRET, {
+            subject: payloadMapper.id,
+            expiresIn: "15m",
         });
         return token;
     }
@@ -11,7 +16,7 @@ export class AuthJWT {
         try {
             const tokenIsValid = jwt.verify(token, secret);
             if (typeof tokenIsValid != "string") {
-                return tokenIsValid.payload.username;
+                return tokenIsValid.payloadMapper.username;
             }
             return tokenIsValid;
         }
