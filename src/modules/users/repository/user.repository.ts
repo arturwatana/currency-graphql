@@ -1,3 +1,4 @@
+import { Currency } from "../../currency/model/currency.model";
 import { User } from "../model/user.model";
 
 export interface IUserRepository {
@@ -6,4 +7,5 @@ export interface IUserRepository {
   getUserByToken(token: string): Promise<User>;
   getUserByUsername(username: string): Promise<User>;
   updateUser(user: User): Promise<User>;
+  deleteCurrency(userId: string, currencyId: string): Promise<User| null>
 }

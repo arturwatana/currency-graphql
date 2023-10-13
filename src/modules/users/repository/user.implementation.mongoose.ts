@@ -1,9 +1,9 @@
-import { ValidationContext } from "graphql";
 import { User } from "../model/user.model.js";
 import { UserMongo } from "../model/user.schema.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMongooseRepository implements IUserRepository {
+ 
   async save(data: User): Promise<User> {
     const user = await UserMongo.create({
       email: data.email,
@@ -40,5 +40,28 @@ export class UserMongooseRepository implements IUserRepository {
     );
     const updatedUser = this.getUserByUsername(user.username);
     return updatedUser;
+  }
+
+  async deleteCurrency(currencyId: string, userId: string): Promise<User| null> {
+    const user = await UserMongo.findOne({
+      id: userId
+    })
+    if(!user){
+      return null
+    }
+    const currenciesWithoutDeletedCurrency = user.searches.filter(currency => {
+      if(currency.id === currencyId) return 
+      return currency
+    })
+       await UserMongo.updateOne(
+        {
+          id: userId
+        },
+        {
+          searches: currenciesWithoutDeletedCurrency
+        }
+       )
+       const updatedUser = this.getUserByUsername(user.username);
+       return updatedUser;
   }
 }

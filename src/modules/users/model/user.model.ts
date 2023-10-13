@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { CurrencyType } from "../../currency/model/currency.model";
+import { CurrencyType } from "../../currency/model/currencyType.model";
+import { Currency } from "../../currency/model/currency.model";
 
 export type IUser = {
   username: string;
@@ -12,7 +13,7 @@ export class User {
   username: string;
   password: string;
   email: string;
-  searches: CurrencyType[];
+  searches: Currency[];
   private constructor({ email, username, password }: IUser) {
     if (!email || !username || !password) {
       throw new Error("Ops, faltaram informacoes");

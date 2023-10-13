@@ -2,6 +2,9 @@ import { IUser, User } from "../model/user.model.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMemoryRepository implements IUserRepository {
+  deleteCurrency(userId: string, currencyId: string): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
   updateUser(user: User): Promise<User> {
     throw new Error("Method not implemented.");
   }

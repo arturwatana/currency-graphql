@@ -1,7 +1,8 @@
 import axios from "axios";
-import { searchesRepository, usersRepository } from "../../../../index.js";
+import { usersRepository } from "../../../../index.js";
 import { GraphQLError } from "graphql";
-import { CurrencyType } from "../../model/currency.model.js";
+import { CurrencyType } from "../../model/currencyType.model.js";
+import {randomUUID} from "node:crypto"
 
 type CurrencyRequest = {
   data: {
@@ -25,7 +26,10 @@ export const createCurrency = async (_, data: CurrencyRequest, context) => {
     const user = context.user;
     const currency: CurrencyType = {
       ...res.data[key[0]],
+      queryDate: res.data[key[0]].create_date,
+      create_date: new Date().toDateString(),
       userId: user.id,
+      id: randomUUID()
     };
     user.searches.push(currency);
     await usersRepository.updateUser(user);

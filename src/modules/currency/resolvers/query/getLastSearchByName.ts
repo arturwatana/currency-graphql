@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { CurrencyType } from "../../model/currency.model";
+import { CurrencyType } from "../../model/currencyType.model";
 import { usersRepository } from "../../../../index.js";
 
 export const getLastSearchByName = async (_, { name }, context) => {

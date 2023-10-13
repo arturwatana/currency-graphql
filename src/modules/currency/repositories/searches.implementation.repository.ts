@@ -1,5 +1,4 @@
-import { usersRepository } from "../../..";
-import { CurrencyType } from "../model/currency.model";
+import { CurrencyType } from "../model/currencyType.model";
 import { ISearchesRepository } from "./searches.repository";
 
 export class SearchesMemoryRepository implements ISearchesRepository {

@@ -32,4 +32,24 @@ export class UserMongooseRepository {
         const updatedUser = this.getUserByUsername(user.username);
         return updatedUser;
     }
+    async deleteCurrency(currencyId, userId) {
+        const user = await UserMongo.findOne({
+            id: userId
+        });
+        if (!user) {
+            return null;
+        }
+        const currenciesWithoutDeletedCurrency = user.searches.filter(currency => {
+            if (currency.id === currencyId)
+                return;
+            return currency;
+        });
+        await UserMongo.updateOne({
+            id: userId
+        }, {
+            searches: currenciesWithoutDeletedCurrency
+        });
+        const updatedUser = this.getUserByUsername(user.username);
+        return updatedUser;
+    }
 }

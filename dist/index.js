@@ -13,11 +13,12 @@ import { main } from "./utils/db/mongoose.start.js";
 import { authService } from "./utils/auth/index.js";
 import { typeDefs } from "./schemas.gql.js";
 import { getLastSearchByName } from "./modules/currency/resolvers/query/getLastSearchByName.js";
+import { deleteCurrency } from "./modules/currency/resolvers/mutation/deleteCurrency.mutation.js";
 export const searchesRepository = new SearchesMemoryRepository();
 export const usersRepository = new UserMongooseRepository();
 const resolvers = {
     Query: { searches, users, getLastSearchByName },
-    Mutation: { createCurrency, createUser, login },
+    Mutation: { createCurrency, createUser, login, deleteCurrency },
 };
 const server = new ApolloServer({
     typeDefs,

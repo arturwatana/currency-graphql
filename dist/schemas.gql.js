@@ -3,9 +3,10 @@ type Currency {
   code: String!
   name: String!
   high: String!
+  id: String
+  queryDate: String!
   low: String!
   create_date: String!
-  user: User!
 }
 
 type User {
@@ -43,6 +44,7 @@ input CurrencyReq {
   }
   type Mutation {
     createCurrency(data: CurrencyReq): Currency
+    deleteCurrency(currencyId: String!): User
     createUser(data: UserDTO): User
     login(data: LoginUserDTO): LoginResDTO!
   }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { usersRepository } from "../../../../index.js";
 import { GraphQLError } from "graphql";
+import { randomUUID } from "node:crypto";
 export const createCurrency = async (_, data, context) => {
     if (!context.user)
         throw new GraphQLError("User is not authenticated", {
@@ -15,7 +16,10 @@ export const createCurrency = async (_, data, context) => {
         const user = context.user;
         const currency = {
             ...res.data[key[0]],
+            queryDate: res.data[key[0]].create_date,
+            create_date: new Date().toDateString(),
             userId: user.id,
+            id: randomUUID()
         };
         user.searches.push(currency);
         await usersRepository.updateUser(user);
