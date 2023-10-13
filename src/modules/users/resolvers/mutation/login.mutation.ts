@@ -1,6 +1,6 @@
 import { usersRepository } from "../../../../index.js";
-import bcrypt from "bcrypt";
 import { authService } from "../../../../utils/auth/index.js";
+import { passwordHash } from "../../../../utils/hash/index.js";
 
 type LoginDTO = {
   username: string;
@@ -16,12 +16,8 @@ export const login = async (_, { data }: LoginReq) => {
   if (!user) {
     throw new Error("Usuário ou senha incorretos");
   }
-  const passwordAreEqual = await bcrypt.compareSync(
-    data.password,
-    user.password
-  );
-
-  if (!passwordAreEqual) {
+  const passwordAreEqual = await passwordHash.compare(data.password, user.password)
+  if(!passwordAreEqual){
     throw new Error("Usuário ou senha incorretos");
   }
   const token = authService.sign(user);

@@ -1,6 +1,6 @@
 import { usersRepository } from "../../../../index.js";
+import { passwordHash } from "../../../../utils/hash/index.js";
 import { IUser, User } from "../../model/user.model.js";
-import bcrypt from "bcrypt";
 
 type CreateUserReq = {
   data: IUser;
@@ -8,7 +8,7 @@ type CreateUserReq = {
 
 export const createUser = async (_, { data }: CreateUserReq) => {
   const user = User.create(data);
-  user.password = await bcrypt.hash(user.password, 10);
+  user.password = await passwordHash.hash(data.password)
   await usersRepository.save(user);
   return user;
 };

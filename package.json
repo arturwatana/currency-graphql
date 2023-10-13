@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "start": "npm run compile && node ./dist/index.js"
+    "start": "npm run compile && node ./dist/index.js",
+"dev": "nodemon ./src/index.ts"
+    
   },
   "keywords": [],
   "author": "",
@@ -23,9 +25,11 @@
     "mongoose": "^7.5.3",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.3"
+    "@types/jsonwebtoken": "^9.0.3",
+    "@vitest/coverage-v8": "^0.34.6"
   }
 }
