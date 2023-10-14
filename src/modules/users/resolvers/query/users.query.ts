@@ -1,5 +1,5 @@
-import { usersRepository } from "../../../../index.js";
+import { ContextProps } from "../../../../index.js";
 
-export const users = () => {
-  return usersRepository.showAll();
+export const users = (_, data ,ctx : ContextProps) => {
+  return ctx.BaseContext.userRepository.showAll();
 };

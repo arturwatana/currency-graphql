@@ -49,8 +49,15 @@ export class UserMongooseRepository implements IUserRepository {
     if(!user){
       return null
     }
+    const currency = user.searches.find(currency => currency.id === currencyId)
+    console.log(currency)
+
+    if(!currency){
+      throw new Error("Ops, currency nao encontrada")
+    }
+
     const currenciesWithoutDeletedCurrency = user.searches.filter(currency => {
-      if(currency.id === currencyId) return 
+      if(currency === currencyId) return 
       return currency
     })
        await UserMongo.updateOne(

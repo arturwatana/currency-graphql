@@ -1,9 +1,10 @@
 import { GraphQLError } from "graphql";
 import { CurrencyType } from "../../model/currencyType.model";
-import { usersRepository } from "../../../../index.js";
+import { ContextProps } from "../../../..";
 
-export const getLastSearchByName = async (_, { name }, context) => {
-  if (!context.user)
+
+export const getLastSearchByName = async (_, { name }, ctx: ContextProps) => {
+  if (!ctx.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {
         code: "UNAUTHENTICATED",
@@ -11,7 +12,7 @@ export const getLastSearchByName = async (_, { name }, context) => {
       },
     });
   const userSearches = (
-    await usersRepository.getUserByUsername(context.user.username)
+    await ctx.BaseContext.userRepository.getUserByUsername(ctx.user.username)
   ).searches;
 
   const lastSearch = userSearches

@@ -1,4 +1,4 @@
-import { usersRepository } from "../../../../index.js";
+import { ContextProps } from "../../../../index.js";
 import { authService } from "../../../../utils/auth/index.js";
 import { passwordHash } from "../../../../utils/hash/index.js";
 
@@ -9,10 +9,11 @@ type LoginDTO = {
 
 type LoginReq = {
   data: LoginDTO;
-};
+}
 
-export const login = async (_, { data }: LoginReq) => {
-  const user = await usersRepository.getUserByUsername(data.username);
+
+export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
+  const user = await ctx.BaseContext.userRepository.getUserByUsername(data.username);
   if (!user) {
     throw new Error("Usuário ou senha incorretos");
   }

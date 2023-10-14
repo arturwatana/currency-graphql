@@ -1,3 +1,2 @@
 import { PasswordBcryptHash } from "./bcrypt.implementation.js";
-
-export const passwordHash = new PasswordBcryptHash()
+export const passwordHash = new PasswordBcryptHash();

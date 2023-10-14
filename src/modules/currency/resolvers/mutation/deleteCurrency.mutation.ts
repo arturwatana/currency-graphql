@@ -1,17 +1,17 @@
 import { GraphQLError } from "graphql";
-import { usersRepository } from "../../../../index.js";
+import { ContextProps } from "../../../../index.js";
 
 
 
 
-export const deleteCurrency = async (_, data, context) => {
-    if (!context.user)
+export const deleteCurrency = async (_, data, ctx: ContextProps) => {
+    if (!ctx.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {
         code: "UNAUTHENTICATED",
         http: { status: 401 },
       },
     });
-    const updatedUser = await usersRepository.deleteCurrency(data.currencyId, context.user.id)
+    const updatedUser = await ctx.BaseContext.userRepository.deleteCurrency(data.currencyId, ctx.user.id)
     return updatedUser
 }

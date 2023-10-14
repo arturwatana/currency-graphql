@@ -1,14 +1,13 @@
 import { GraphQLError } from "graphql";
-import { usersRepository } from "../../../../index.js";
-export const getLastSearchByName = async (_, { name }, context) => {
-    if (!context.user)
+export const getLastSearchByName = async (_, { name }, ctx) => {
+    if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
             extensions: {
                 code: "UNAUTHENTICATED",
                 http: { status: 401 },
             },
         });
-    const userSearches = (await usersRepository.getUserByUsername(context.user.username)).searches;
+    const userSearches = (await ctx.BaseContext.userRepository.getUserByUsername(ctx.user.username)).searches;
     const lastSearch = userSearches
         .reverse()
         .find((search) => search.code === name);
