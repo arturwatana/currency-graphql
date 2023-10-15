@@ -19,9 +19,9 @@ const services = {
 };
 const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req, res }) => {
+    context: async ({ req }) => {
         const user = getTokenAndSetUser(req.headers.authorization);
-        return { user, services };
-    },
+        return { user, BaseContext: services };
+    }
 });
 console.log(`🚀  Server ready at: ${url}`);

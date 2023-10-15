@@ -1,7 +1,7 @@
 
 
 export type Currency = {
-    code: string;
+  code: string;
   name: string;
   high: string;
   low: string;

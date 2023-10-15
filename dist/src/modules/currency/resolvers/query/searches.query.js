@@ -7,6 +7,6 @@ export const searches = async (_, data, ctx) => {
                 http: { status: 401 },
             },
         });
-    const userSearches = (await ctx.userRepository.getUserByUsername(ctx.user.username)).searches;
+    const userSearches = (await ctx.BaseContext.userRepository.getUserByUsername(ctx.user.username)).searches;
     return userSearches;
 };

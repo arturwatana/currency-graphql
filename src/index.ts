@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { ApolloServer } from "@apollo/server";
+import { ApolloServer, BaseContext } from "@apollo/server";
 import {  StartStandaloneServerOptions, startStandaloneServer } from "@apollo/server/standalone";
 import { main } from "./utils/db/mongoose.start.js";
 import { typeDefs } from "./schemas.gql.js";
@@ -17,30 +17,28 @@ type ServicesProps = {
   passwordHash: IHashPassword
 }
 
-export type ContextProps = {
+export interface ContextProps {
   user?: User
   BaseContext: ServicesProps
 }
 
-const server = new ApolloServer({
+const server = new ApolloServer<BaseContext>({
   typeDefs,
   resolvers,
 });
-main().catch((err) => console.log(err));
 
+main().catch((err) => console.log(err));
 
 const services = {
   usersRepository,
   passwordHash
 }
 
-
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
-  context: async ({ req, res }) => {
+  context: async ({ req }) => {
     const user = getTokenAndSetUser(req.headers.authorization)
-    return { user, services };
-  },
+    return { user, BaseContext: services };
+  }
 });
-
 console.log(`🚀  Server ready at: ${url}`);
