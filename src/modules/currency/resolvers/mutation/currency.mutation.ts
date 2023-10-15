@@ -3,7 +3,7 @@ import { GraphQLError } from "graphql";
 import { CurrencyType } from "../../model/currencyType.model.js";
 import {randomUUID} from "node:crypto"
 import { ContextProps } from "../../../../index.js";
-import { Currency } from "../../model/currency.model.js";
+import { Currency, ICurrency } from "../../model/currency.model.js";
 
 type CurrencyRequest = {
   data: {
@@ -25,13 +25,12 @@ export const createCurrency = async (_, data: CurrencyRequest, ctx: ContextProps
     );
     const key: string[] = Object.keys(res.data);
     const user = ctx.user;
-    const currency: Currency = {
+    const currencyData: ICurrency =  {
       ...res.data[key[0]],
       queryDate: res.data[key[0]].create_date,
-      create_date: new Date().toDateString(),
       userId: user.id,
-      id: randomUUID()
     };
+    const currency: Currency = Currency.create(currencyData)
     user.searches.push(currency);
     await ctx.BaseContext.userRepository.updateUser(user)
     return currency;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { GraphQLError } from "graphql";
-import { randomUUID } from "node:crypto";
+import { Currency } from "../../model/currency.model.js";
 export const createCurrency = async (_, data, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
@@ -13,13 +13,12 @@ export const createCurrency = async (_, data, ctx) => {
         const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.data.name}`);
         const key = Object.keys(res.data);
         const user = ctx.user;
-        const currency = {
+        const currencyData = {
             ...res.data[key[0]],
             queryDate: res.data[key[0]].create_date,
-            create_date: new Date().toDateString(),
             userId: user.id,
-            id: randomUUID()
         };
+        const currency = Currency.create(currencyData);
         user.searches.push(currency);
         await ctx.BaseContext.userRepository.updateUser(user);
         return currency;
