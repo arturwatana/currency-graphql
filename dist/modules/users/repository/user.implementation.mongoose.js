@@ -7,6 +7,8 @@ export class UserMongooseRepository {
             password: data.password,
             username: data.username,
             searches: data.searches,
+            createdAt: data.createdAt,
+            interests: data.interests
         });
         return user;
     }
@@ -25,7 +27,7 @@ export class UserMongooseRepository {
         });
         return user || null;
     }
-    async updateUser(user) {
+    async updateUserSearches(user) {
         await UserMongo.updateOne({
             id: user.id,
         }, { searches: user.searches });
@@ -39,8 +41,12 @@ export class UserMongooseRepository {
         if (!user) {
             return null;
         }
+        const currency = user.searches.find(currency => currency.id === currencyId);
+        if (!currency) {
+            throw new Error("Ops, currency nao encontrada");
+        }
         const currenciesWithoutDeletedCurrency = user.searches.filter(currency => {
-            if (currency.id === currencyId)
+            if (currency === currencyId)
                 return;
             return currency;
         });
@@ -49,7 +55,34 @@ export class UserMongooseRepository {
         }, {
             searches: currenciesWithoutDeletedCurrency
         });
-        const updatedUser = this.getUserByUsername(user.username);
+        const updatedUser = await this.getUserByUsername(user.username);
         return updatedUser;
+    }
+    async updateUserInterests(user, interest) {
+        const interestAlreadyExists = user.interests.find(savedInterest => savedInterest.name === interest.name);
+        if (interestAlreadyExists) {
+            if (interestAlreadyExists.targetValue != interest.targetValue) {
+                const interestIndex = user.interests.findIndex(savedInterest => savedInterest.name === interestAlreadyExists.name);
+                user.interests[interestIndex].targetValue = interest.targetValue;
+            }
+        }
+        else {
+            user.interests.push(interest);
+        }
+        await UserMongo.updateOne({
+            id: user.id,
+        }, { interests: user.interests });
+        const updatedUser = await this.getUserByUsername(user.username);
+        return updatedUser;
+    }
+    async updateInterestTargetValue(username, interestName, targetValue) {
+        const user = await this.getUserByUsername(username);
+        const interestIndex = user.interests.findIndex(interest => interest.name.toLowerCase() === interestName.toLowerCase());
+        user.interests[interestIndex].targetValue = targetValue;
+        await UserMongo.updateOne({
+            id: user.id,
+        }, { interests: user.interests });
+        const updatedUser = await this.getUserByUsername(user.username);
+        return updatedUser.interests[interestIndex];
     }
 }

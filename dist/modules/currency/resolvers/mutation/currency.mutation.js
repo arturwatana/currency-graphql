@@ -1,9 +1,9 @@
 import axios from "axios";
-import { usersRepository } from "../../../../index.js";
 import { GraphQLError } from "graphql";
-import { randomUUID } from "node:crypto";
-export const createCurrency = async (_, data, context) => {
-    if (!context.user)
+import { Currency } from "../../model/currency.model.js";
+import { Interest } from "../../../Interest/model/Interest.model.js";
+export const createCurrency = async (_, data, ctx) => {
+    if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
             extensions: {
                 code: "UNAUTHENTICATED",
@@ -13,16 +13,22 @@ export const createCurrency = async (_, data, context) => {
     try {
         const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.data.name}`);
         const key = Object.keys(res.data);
-        const user = context.user;
-        const currency = {
+        const user = ctx.user;
+        const currencyData = {
             ...res.data[key[0]],
             queryDate: res.data[key[0]].create_date,
-            create_date: new Date().toDateString(),
             userId: user.id,
-            id: randomUUID()
         };
+        const currency = Currency.create(currencyData);
+        const currencyAlredyInInterests = user.interests.find(interest => interest.name === currency.code);
+        if (!currencyAlredyInInterests) {
+            const interest = Interest.create({
+                name: currency.code
+            });
+            await ctx.BaseContext.usersRepository.updateUserInterests(user, interest);
+        }
         user.searches.push(currency);
-        await usersRepository.updateUser(user);
+        const up = await ctx.BaseContext.usersRepository.updateUserSearches(user);
         return currency;
     }
     catch (err) {

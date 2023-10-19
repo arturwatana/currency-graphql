@@ -1,37 +1,37 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { createCurrency } from "./modules/currency/resolvers/mutation/currency.mutation.js";
-import { searches } from "./modules/currency/resolvers/query/searches.query.js";
-import { SearchesMemoryRepository } from "./modules/currency/repositories/searches.implementation.repository.js";
-import { createUser } from "./modules/users/resolvers/mutation/users.mutation.js";
-import { users } from "./modules/users/resolvers/query/users.query.js";
-import { login } from "./modules/users/resolvers/mutation/login.mutation.js";
-import { UserMongooseRepository } from "./modules/users/repository/user.implementation.mongoose.js";
 import { main } from "./utils/db/mongoose.start.js";
-import { authService } from "./utils/auth/index.js";
 import { typeDefs } from "./schemas.gql.js";
-import { getLastSearchByName } from "./modules/currency/resolvers/query/getLastSearchByName.js";
-import { deleteCurrency } from "./modules/currency/resolvers/mutation/deleteCurrency.mutation.js";
-export const searchesRepository = new SearchesMemoryRepository();
-export const usersRepository = new UserMongooseRepository();
-const resolvers = {
-    Query: { searches, users, getLastSearchByName },
-    Mutation: { createCurrency, createUser, login, deleteCurrency },
-};
+import { passwordHash } from "./utils/hash/index.js";
+import { getTokenAndSetUser } from "./utils/context/index.js";
+import { resolvers } from "./resolvers.gql.js";
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { expressMiddleware } from '@apollo/server/express4';
+import http from "http";
+import express from "express";
+import cors from "cors";
+import { usersRepository } from "./modules/users/repository/index.js";
+const app = express();
+app.use(cors());
+app.use(express.json());
+const httpServer = http.createServer(app);
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 main().catch((err) => console.log(err));
-const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-    context: async ({ req, res }) => {
-        const token = await authService.extractTokenFromHeader(req);
-        const tokenIsValid = authService.verify(token, process.env.JWT_SECRET);
-        const user = await usersRepository.getUserByUsername(tokenIsValid);
-        return { user };
-    },
-});
-console.log(`🚀  Server ready at: ${url}`);
+const services = {
+    usersRepository,
+    passwordHash
+};
+await server.start();
+app.use('/graphql', cors(), expressMiddleware(server, {
+    context: async ({ req }) => {
+        const user = await getTokenAndSetUser(req.headers.authorization);
+        return { user, BaseContext: services, oi: " oi" };
+    }
+}));
+await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+console.log(`🚀  Server ready at: 4000`);

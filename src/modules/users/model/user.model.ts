@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { CurrencyType } from "../../currency/model/currencyType.model";
 import { Currency } from "../../currency/model/currency.model";
+import { Interest } from "../../Interest/model/Interest.model";
 
 export type IUser = {
   username: string;
@@ -8,12 +8,17 @@ export type IUser = {
   email: string;
 };
 
+
+
 export class User {
   id: string;
   username: string;
   password: string;
   email: string;
   searches: Currency[];
+  createdAt: Date
+  interests: Interest[]
+
   private constructor({ email, username, password }: IUser) {
     if (!email || !username || !password) {
       throw new Error("Ops, faltaram informacoes");
@@ -22,8 +27,10 @@ export class User {
     this.id = randomUUID();
     this.username = username;
     this.email = email;
+    this.createdAt = new Date()
     this.password = password;
     this.searches = [];
+    this.interests = []
   }
 
   static create(data: IUser): User {

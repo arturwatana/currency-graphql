@@ -12,7 +12,7 @@ export const getLastSearchByName = async (_, { name }, ctx: ContextProps) => {
       },
     });
   const userSearches = (
-    await ctx.BaseContext.userRepository.getUserByUsername(ctx.user.username)
+    await ctx.BaseContext.usersRepository.getUserByUsername(ctx.user.username)
   ).searches;
 
   const lastSearch = userSearches

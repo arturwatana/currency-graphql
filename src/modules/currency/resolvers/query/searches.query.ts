@@ -11,7 +11,7 @@ export const searches = async (_, data, ctx: ContextProps) => {
     });
 
   const userSearches = (
-    await ctx.BaseContext.userRepository.getUserByUsername(ctx.user.username)
+    await ctx.BaseContext.usersRepository.getUserByUsername(ctx.user.username)
   ).searches;
 
   return userSearches;

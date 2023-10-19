@@ -14,7 +14,9 @@ type User {
   username: String!
   password: String!
   email: String!
+  createdAt: Date!
   searches: [Currency!]!
+  interests: [Interest!]!
 }
 
 input UserDTO {
@@ -29,9 +31,21 @@ type LoginResDTO {
   token: String!
 }
 
+type Interest {
+  name: String
+  targetValue: Int
+  createdAt: Date
+}
+
+scalar Date
+
 input LoginUserDTO{
   username: String!
   password: String!
+}
+input InterestDTO{
+  name: String!
+  targetValue: Int!
 }
 input CurrencyReq {
   name: String!
@@ -44,6 +58,7 @@ input CurrencyReq {
   }
   type Mutation {
     createCurrency(data: CurrencyReq): Currency
+    updateInterest(data: InterestDTO!): User!
     deleteCurrency(currencyId: String!): User
     createUser(data: UserDTO): User
     login(data: LoginUserDTO): LoginResDTO!

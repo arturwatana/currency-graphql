@@ -9,6 +9,6 @@ type CreateUserReq = {
 export const createUser = async (_, { data }: CreateUserReq, ctx: ContextProps) => {
   const user = User.create(data);
   user.password = await ctx.BaseContext.passwordHash.hash(data.password)
-  await ctx.BaseContext.userRepository.save(user);
+  await ctx.BaseContext.usersRepository.save(user);
   return user;
 };

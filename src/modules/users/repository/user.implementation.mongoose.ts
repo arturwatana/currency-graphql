@@ -1,8 +1,12 @@
+import { Interest } from "../../Interest/model/Interest.model.js";
+import { searches } from "../../currency/resolvers/query/searches.query.js";
 import { User } from "../model/user.model.js";
 import { UserMongo } from "../model/user.schema.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMongooseRepository implements IUserRepository {
+
+ 
  
   async save(data: User): Promise<User> {
     const user = await UserMongo.create({
@@ -11,6 +15,8 @@ export class UserMongooseRepository implements IUserRepository {
       password: data.password,
       username: data.username,
       searches: data.searches,
+      createdAt: data.createdAt,
+      interests: data.interests
     });
 
     return user;
@@ -31,7 +37,7 @@ export class UserMongooseRepository implements IUserRepository {
     });
     return user || null;
   }
-  async updateUser(user: User): Promise<User> {
+  async updateUserSearches(user: User): Promise<User> {
     await UserMongo.updateOne(
       {
         id: user.id,
@@ -50,7 +56,6 @@ export class UserMongooseRepository implements IUserRepository {
       return null
     }
     const currency = user.searches.find(currency => currency.id === currencyId)
-    console.log(currency)
 
     if(!currency){
       throw new Error("Ops, currency nao encontrada")
@@ -68,7 +73,44 @@ export class UserMongooseRepository implements IUserRepository {
           searches: currenciesWithoutDeletedCurrency
         }
        )
-       const updatedUser = this.getUserByUsername(user.username);
+       const updatedUser = await this.getUserByUsername(user.username);
        return updatedUser;
   }
+
+
+  async updateUserInterests(user: User, interest: Interest): Promise<User> {
+   const interestAlreadyExists = user.interests.find(savedInterest => savedInterest.name === interest.name)
+   if(interestAlreadyExists){
+    if(interestAlreadyExists.targetValue != interest.targetValue){
+      const interestIndex = user.interests.findIndex(savedInterest => savedInterest.name === interestAlreadyExists.name)
+      user.interests[interestIndex].targetValue = interest.targetValue
+    }
+  } else {
+    user.interests.push(interest)
+  }
+    await UserMongo.updateOne(
+      {
+        id: user.id,
+      },
+      { interests: user.interests }
+    );
+    const updatedUser = await this.getUserByUsername(user.username);
+    return updatedUser;
+  }
+  
+  async updateInterestTargetValue(username: string, interestName: string, targetValue: number): Promise<Interest> {
+    const user = await this.getUserByUsername(username);
+    const interestIndex = user.interests.findIndex(interest => interest.name.toLowerCase() === interestName.toLowerCase())
+    user.interests[interestIndex].targetValue = targetValue
+    await UserMongo.updateOne(
+      {
+        id: user.id,
+      },
+      { interests: user.interests }
+    );
+    const updatedUser = await this.getUserByUsername(user.username);
+
+      return updatedUser.interests[interestIndex]
+  }
+
 }

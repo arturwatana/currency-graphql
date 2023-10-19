@@ -7,7 +7,6 @@ import { typeDefs } from "./schemas.gql.js";
 import { passwordHash } from "./utils/hash/index.js";
 import { getTokenAndSetUser } from "./utils/context/index.js";
 import { resolvers } from "./resolvers.gql.js";
-import { usersRepository } from "./modules/users/repository/index.js";
 import { User } from "./modules/users/model/user.model.js";
 import { IUserRepository } from "./modules/users/repository/user.repository.js";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -16,10 +15,10 @@ import { expressMiddleware } from '@apollo/server/express4';
 import http from "http";
 import express from "express";
 import cors from "cors";
-
+import { usersRepository } from "./modules/users/repository/index.js";
 
 type ServicesProps = {
-  userRepository: IUserRepository
+  usersRepository: IUserRepository
   passwordHash: IHashPassword
 }
 
@@ -52,18 +51,11 @@ app.use(
   cors<cors.CorsRequest>(),
   expressMiddleware(server, {
     context: async ({ req }) => {
-      const user = getTokenAndSetUser(req.headers.authorization)
-      return { user, BaseContext: services };
+      const user = await getTokenAndSetUser(req.headers.authorization)
+      return { user, BaseContext: services, oi: " oi" };
     }
   }),
 );
-// const { url } = await startStandaloneServer(server, {
-//   listen: { port: 4000 },
-//   context: async ({ req }) => {
-//     const user = getTokenAndSetUser(req.headers.authorization)
-//     return { user, BaseContext: services };
-//   }
-// });
 
 await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
 console.log(`🚀  Server ready at: 4000`);

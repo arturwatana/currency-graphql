@@ -1,4 +1,4 @@
-import { Currency } from "../../currency/model/currency.model";
+import { Interest } from "../../Interest/model/Interest.model";
 import { User } from "../model/user.model";
 
 export interface IUserRepository {
@@ -6,6 +6,9 @@ export interface IUserRepository {
   showAll(): Promise<User[]>;
   getUserByToken(token: string): Promise<User>;
   getUserByUsername(username: string): Promise<User>;
-  updateUser(user: User): Promise<User>;
-  deleteCurrency(userId: string, currencyId: string): Promise<User| null>
+  updateUserSearches(user: User): Promise<User>;
+  updateUserInterests(user: User, interest: Interest): Promise<User>;
+  updateInterestTargetValue(userId: string, interestName: string, targetValue: number): Promise<Interest>
+  deleteCurrency(username: string, currencyId: string): Promise<User| null>
+
 }

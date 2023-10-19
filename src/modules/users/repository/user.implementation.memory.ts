@@ -1,11 +1,19 @@
+import { Interest } from "../../Interest/model/Interest.model.js";
 import { IUser, User } from "../model/user.model.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMemoryRepository implements IUserRepository {
+  updateInterestTargetValue(userId: string, interestName: string, targetValue: number): Promise<Interest> {
+    throw new Error("Method not implemented.");
+  }
+  updateUserInterests(user: User, interest: Interest): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
+
   deleteCurrency(userId: string, currencyId: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  updateUser(user: User): Promise<User> {
+  updateUserSearches(user: User): Promise<User> {
     throw new Error("Method not implemented.");
   }
   getUserByUsername(username: string): Promise<User> {

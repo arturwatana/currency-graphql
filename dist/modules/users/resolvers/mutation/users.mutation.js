@@ -1,9 +1,7 @@
-import { usersRepository } from "../../../../index.js";
 import { User } from "../../model/user.model.js";
-import bcrypt from "bcrypt";
-export const createUser = async (_, { data }) => {
+export const createUser = async (_, { data }, ctx) => {
     const user = User.create(data);
-    user.password = await bcrypt.hash(user.password, 10);
-    await usersRepository.save(user);
+    user.password = await ctx.BaseContext.passwordHash.hash(data.password);
+    await ctx.BaseContext.usersRepository.save(user);
     return user;
 };

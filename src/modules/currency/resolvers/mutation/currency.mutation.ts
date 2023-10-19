@@ -4,6 +4,7 @@ import { CurrencyType } from "../../model/currencyType.model.js";
 import {randomUUID} from "node:crypto"
 import { ContextProps } from "../../../../index.js";
 import { Currency, ICurrency } from "../../model/currency.model.js";
+import { Interest } from "../../../Interest/model/Interest.model.js";
 
 type CurrencyRequest = {
   data: {
@@ -31,8 +32,15 @@ export const createCurrency = async (_, data: CurrencyRequest, ctx: ContextProps
       userId: user.id,
     };
     const currency: Currency = Currency.create(currencyData)
+    const currencyAlredyInInterests = user.interests.find(interest => interest.name === currency.code)
+    if(!currencyAlredyInInterests){
+       const interest = Interest.create({
+        name: currency.code
+       })
+       await ctx.BaseContext.usersRepository.updateUserInterests(user, interest)
+    }
     user.searches.push(currency);
-    await ctx.BaseContext.userRepository.updateUser(user)
+    const up = await ctx.BaseContext.usersRepository.updateUserSearches(user)
     return currency;
   } catch (err) {
     throw new Error(err.response.data.message);

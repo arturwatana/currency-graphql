@@ -17,7 +17,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
   searches: {
+    type: Array,
+    required: true,
+  },
+  interests: {
     type: Array,
     required: true,
   },

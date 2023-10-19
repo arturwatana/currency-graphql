@@ -1,4 +1,3 @@
-import { usersRepository } from "../../../../index.js";
-export const users = () => {
-    return usersRepository.showAll();
+export const users = (_, data, ctx) => {
+    return ctx.BaseContext.usersRepository.showAll();
 };

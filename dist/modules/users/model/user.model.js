@@ -7,8 +7,10 @@ export class User {
         this.id = randomUUID();
         this.username = username;
         this.email = email;
+        this.createdAt = new Date();
         this.password = password;
         this.searches = [];
+        this.interests = [];
     }
     static create(data) {
         const user = new User(data);

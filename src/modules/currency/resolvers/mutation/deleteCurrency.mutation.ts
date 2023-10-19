@@ -12,6 +12,6 @@ export const deleteCurrency = async (_, data, ctx: ContextProps) => {
         http: { status: 401 },
       },
     });
-    const updatedUser = await ctx.BaseContext.userRepository.deleteCurrency(data.currencyId, ctx.user.id)
+    const updatedUser = await ctx.BaseContext.usersRepository.deleteCurrency(data.currencyId, ctx.user.id)
     return updatedUser
 }
