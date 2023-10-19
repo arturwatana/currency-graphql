@@ -9,6 +9,31 @@ type Currency {
   create_date: String!
 }
 
+type Last15DaysFromInterest {
+  code: String!
+  codein: String!
+  name: String!
+  high: String!
+  low: String!
+  varBid: String!
+  pctChange: String!
+  bid: String!
+  ask: String!
+  timestamp: String!
+  create_date: String!
+  lastDays: [LastDaysQuery!]!
+}
+
+type LastDaysQuery{
+  high: String!
+  low: String!
+  varBid: String!
+  pctChange: String!
+  bid: String!
+  ask: String!
+  timestamp: String!
+}
+
 type User {
   id: String!
   username: String!
@@ -54,6 +79,7 @@ input CurrencyReq {
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
+    getUserLast15DaysFromInterests:[Last15DaysFromInterest!]!
     users:[User!]!
   }
   type Mutation {

@@ -2,6 +2,9 @@ export class UserMemoryRepository {
     constructor() {
         this.items = [];
     }
+    getUserInterests(user) {
+        throw new Error("Method not implemented.");
+    }
     updateInterestTargetValue(userId, interestName, targetValue) {
         throw new Error("Method not implemented.");
     }

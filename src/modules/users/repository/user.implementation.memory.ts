@@ -3,6 +3,10 @@ import { IUser, User } from "../model/user.model.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMemoryRepository implements IUserRepository {
+  getUserInterests(user: User): Promise<Interest[]> {
+    throw new Error("Method not implemented.");
+  }
+
   updateInterestTargetValue(userId: string, interestName: string, targetValue: number): Promise<Interest> {
     throw new Error("Method not implemented.");
   }

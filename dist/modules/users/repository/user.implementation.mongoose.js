@@ -85,4 +85,8 @@ export class UserMongooseRepository {
         const updatedUser = await this.getUserByUsername(user.username);
         return updatedUser.interests[interestIndex];
     }
+    async getUserInterests(user) {
+        const updatedUser = await this.getUserByUsername(user.username);
+        return updatedUser.interests;
+    }
 }

@@ -1,4 +1,4 @@
-import { Interest } from "../../Interest/model/Interest.model";
+import { Interest, Last15DaysInterestProps } from "../../Interest/model/Interest.model";
 import { User } from "../model/user.model";
 
 export interface IUserRepository {
@@ -10,5 +10,5 @@ export interface IUserRepository {
   updateUserInterests(user: User, interest: Interest): Promise<User>;
   updateInterestTargetValue(userId: string, interestName: string, targetValue: number): Promise<Interest>
   deleteCurrency(username: string, currencyId: string): Promise<User| null>
-
+  getUserInterests(user: User): Promise<Interest[]>
 }

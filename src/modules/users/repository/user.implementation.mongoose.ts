@@ -5,8 +5,6 @@ import { UserMongo } from "../model/user.schema.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMongooseRepository implements IUserRepository {
-
- 
  
   async save(data: User): Promise<User> {
     const user = await UserMongo.create({
@@ -111,6 +109,12 @@ export class UserMongooseRepository implements IUserRepository {
     const updatedUser = await this.getUserByUsername(user.username);
 
       return updatedUser.interests[interestIndex]
+  }
+
+
+  async getUserInterests(user: User): Promise<Interest[]> {
+    const updatedUser = await this.getUserByUsername(user.username)
+    return updatedUser.interests
   }
 
 }
