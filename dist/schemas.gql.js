@@ -41,7 +41,7 @@ type User {
   email: String!
   createdAt: Date!
   searches: [Currency!]!
-  interests: [Interest!]!
+  interests: [Interest]!
 }
 
 input UserDTO {
@@ -49,6 +49,7 @@ input UserDTO {
   password: String!
   email: String!
 }
+
 
 type LoginResDTO {
   id: String!
@@ -76,6 +77,10 @@ input CurrencyReq {
   name: String!
 }
 
+input DeleteInterestDTO {
+  interestName: String!
+}
+
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
@@ -86,6 +91,7 @@ input CurrencyReq {
     createCurrency(data: CurrencyReq): Currency
     updateInterest(data: InterestDTO!): User!
     deleteCurrency(currencyId: String!): User
+    deleteInterest(data: DeleteInterestDTO!): User
     createUser(data: UserDTO): User
     login(data: LoginUserDTO): LoginResDTO!
   }

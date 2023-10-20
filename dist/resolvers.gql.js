@@ -7,7 +7,8 @@ import { deleteCurrency } from "./modules/currency/resolvers/mutation/deleteCurr
 import { createCurrency } from "./modules/currency/resolvers/mutation/currency.mutation.js";
 import { updateInterest } from "./modules/Interest/resolvers/mutation/updateInterest.mutation.js";
 import { getUserLast15DaysFromInterests } from "./modules/users/resolvers/query/interests.query.js";
+import { deleteInterest } from "./modules/Interest/resolvers/mutation/deleteInterest.mutation.js";
 export const resolvers = {
     Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests },
-    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest },
+    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest },
 };

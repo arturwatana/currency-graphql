@@ -1,5 +1,19 @@
 import { UserMongo } from "../model/user.schema.js";
 export class UserMongooseRepository {
+    async deleteInterest(username, interestName) {
+        const user = await this.getUserByUsername(username);
+        const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
+            if (interest.name === interestName) {
+                return;
+            }
+            return interest;
+        });
+        await UserMongo.updateOne({
+            id: user.id,
+        }, { interests: userInterestsWithouDeletedInterest });
+        const updatedUser = await this.getUserByUsername(username);
+        return updatedUser;
+    }
     async save(data) {
         const user = await UserMongo.create({
             email: data.email,

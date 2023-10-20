@@ -5,6 +5,24 @@ import { UserMongo } from "../model/user.schema.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMongooseRepository implements IUserRepository {
+  async deleteInterest(username: string, interestName: string): Promise<User> {
+    const user = await this.getUserByUsername(username)
+    const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
+      if(interest.name === interestName){
+        return
+      }
+      return interest
+    })
+     await UserMongo.updateOne(
+      {
+        id: user.id,
+      },
+      { interests: userInterestsWithouDeletedInterest }
+    );
+    const updatedUser = await this.getUserByUsername(username)
+    return updatedUser
+  }
+
  
   async save(data: User): Promise<User> {
     const user = await UserMongo.create({
