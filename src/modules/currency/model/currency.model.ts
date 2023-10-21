@@ -7,6 +7,7 @@ export type ICurrency = {
   low: string;
   userId: string;
   queryDate: Date;
+  timestamp: Date
 }
 
 export class Currency {
@@ -18,6 +19,7 @@ export class Currency {
   create_date: string;
   userId: string;
   queryDate: Date;
+  timestamp: Date
 
   private constructor(data: ICurrency) {
     if (!data.userId) {
@@ -31,6 +33,7 @@ export class Currency {
     this.create_date = new Date().toDateString()
     this.userId = data.userId;
     this.queryDate = data.queryDate;
+    this.timestamp = data.timestamp
   }
 
   static create(data: ICurrency): Currency {

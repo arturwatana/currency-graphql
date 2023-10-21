@@ -8,7 +8,7 @@ export class AuthJWT {
         };
         const token = jwt.sign({ payloadMapper }, process.env.JWT_SECRET, {
             subject: payloadMapper.id,
-            expiresIn: "15m",
+            expiresIn: "60m",
         });
         return token;
     }

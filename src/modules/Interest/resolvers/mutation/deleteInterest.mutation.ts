@@ -11,8 +11,6 @@ interface deleteInterestReq {
 
 
 export const deleteInterest = async (_,{data}: deleteInterestReq, ctx : ContextProps) => {
-    console.log("dete")
-   console.log(data)
     if (!ctx.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {

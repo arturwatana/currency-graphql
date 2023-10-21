@@ -40,7 +40,7 @@ export const createCurrency = async (_, data: CurrencyRequest, ctx: ContextProps
        await ctx.BaseContext.usersRepository.updateUserInterests(user, interest)
     }
     user.searches.push(currency);
-    const up = await ctx.BaseContext.usersRepository.updateUserSearches(user)
+    await ctx.BaseContext.usersRepository.updateUserSearches(user)
     return currency;
   } catch (err) {
     throw new Error(err.response.data.message);

@@ -28,7 +28,7 @@ export const createCurrency = async (_, data, ctx) => {
             await ctx.BaseContext.usersRepository.updateUserInterests(user, interest);
         }
         user.searches.push(currency);
-        const up = await ctx.BaseContext.usersRepository.updateUserSearches(user);
+        await ctx.BaseContext.usersRepository.updateUserSearches(user);
         return currency;
     }
     catch (err) {

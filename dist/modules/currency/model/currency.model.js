@@ -12,6 +12,7 @@ export class Currency {
         this.create_date = new Date().toDateString();
         this.userId = data.userId;
         this.queryDate = data.queryDate;
+        this.timestamp = data.timestamp;
     }
     static create(data) {
         const currency = new Currency(data);

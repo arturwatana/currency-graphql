@@ -2,7 +2,7 @@ import axios from "axios";
 import { GraphQLError } from "graphql";
 export const getUserLast15DaysFromInterests = async (_, data, ctx) => {
     if (!ctx.user)
-        throw new GraphQLError("User is not authenticated", {
+        throw new GraphQLError("Ops, preciso que faca o login novamente", {
             extensions: {
                 code: "UNAUTHENTICATED",
                 http: { status: 401 },
@@ -19,7 +19,6 @@ export const getUserLast15DaysFromInterests = async (_, data, ctx) => {
             };
             return last15FromUniqueInterest;
         });
-        console.log(last15DaysFromInterests);
         return last15DaysFromInterests;
     }
     catch (err) {

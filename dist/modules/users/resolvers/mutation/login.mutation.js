@@ -1,7 +1,7 @@
 import { authService } from "../../../../utils/auth/authService.js";
 import { passwordHash } from "../../../../utils/hash/index.js";
 export const login = async (_, { data }, ctx) => {
-    const user = await ctx.BaseContext.usersRepository.getUserByUsername(data.username);
+    const user = await ctx.BaseContext.usersRepository.getUserByUsername(data.username.toLowerCase());
     if (!user) {
         throw new Error("Usuário ou senha incorretos");
     }

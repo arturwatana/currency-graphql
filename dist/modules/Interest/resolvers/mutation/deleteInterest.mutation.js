@@ -1,7 +1,5 @@
 import { GraphQLError } from "graphql";
 export const deleteInterest = async (_, { data }, ctx) => {
-    console.log("dete");
-    console.log(data);
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
             extensions: {

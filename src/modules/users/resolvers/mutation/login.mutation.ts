@@ -14,7 +14,7 @@ type LoginReq = {
 
 
 export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
-  const user = await ctx.BaseContext.usersRepository.getUserByUsername(data.username);
+  const user = await ctx.BaseContext.usersRepository.getUserByUsername(data.username.toLowerCase());
   if (!user) {
     throw new Error("Usuário ou senha incorretos");
   }

@@ -30,7 +30,7 @@ await server.start();
 app.use('/graphql', cors(), expressMiddleware(server, {
     context: async ({ req }) => {
         const user = await getTokenAndSetUser(req.headers.authorization);
-        return { user, BaseContext: services, oi: " oi" };
+        return { user, BaseContext: services };
     }
 }));
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));

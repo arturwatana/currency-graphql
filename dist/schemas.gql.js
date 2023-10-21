@@ -7,6 +7,19 @@ type Currency {
   queryDate: String!
   low: String!
   create_date: String!
+  timestamp: Date!
+}
+
+type CurrencyPeriod {
+  code: String!
+  name: String!
+  high: String!
+  id: String
+  queryDate: String!
+  low: String!
+  create_date: String!
+  timestamp: Date!
+  otherDays: [Currency!]!
 }
 
 type Last15DaysFromInterest {
@@ -80,6 +93,10 @@ input CurrencyReq {
 input DeleteInterestDTO {
   interestName: String!
 }
+input CreateCurrencyByPeriodDTO {
+  startAt: String!
+  endAt: String!
+}
 
   type Query {
     searches:[Currency!]!
@@ -88,7 +105,8 @@ input DeleteInterestDTO {
     users:[User!]!
   }
   type Mutation {
-    createCurrency(data: CurrencyReq): Currency
+    createCurrency(data: CurrencyReq!): Currency!
+    createCurrencyByPeriod(data: CreateCurrencyByPeriodDTO!): CurrencyPeriod
     updateInterest(data: InterestDTO!): User!
     deleteCurrency(currencyId: String!): User
     deleteInterest(data: DeleteInterestDTO!): User

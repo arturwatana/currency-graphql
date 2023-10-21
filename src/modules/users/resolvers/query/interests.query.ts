@@ -12,7 +12,7 @@ type getInterestsDTO = {
 
 export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, ctx: ContextProps) => {
     if (!ctx.user)
-    throw new GraphQLError("User is not authenticated", {
+    throw new GraphQLError("Ops, preciso que faca o login novamente", {
       extensions: {
         code: "UNAUTHENTICATED",
         http: { status: 401 },
@@ -31,8 +31,6 @@ export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, c
             }
             return last15FromUniqueInterest
         })
-
-        console.log(last15DaysFromInterests)
 
         return last15DaysFromInterests
         

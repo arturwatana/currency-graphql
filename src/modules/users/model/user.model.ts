@@ -25,8 +25,8 @@ export class User {
     }
 
     this.id = randomUUID();
-    this.username = username;
-    this.email = email;
+    this.username = username.toLowerCase();
+    this.email = email.toLowerCase();
     this.createdAt = new Date()
     this.password = password;
     this.searches = [];
