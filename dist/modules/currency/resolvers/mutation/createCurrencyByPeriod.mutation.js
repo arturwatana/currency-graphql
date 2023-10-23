@@ -14,13 +14,14 @@ export const createCurrencyByPeriod = async (_, { data }, ctx) => {
     try {
         const startAt = data.startAt.split("/").join();
         const endAt = data.endAt.split("/").join();
-        const res = await axios.get(`https://economia.awesomeapi.com.br/USD-BRL/10?start_date=${startAt}&end_date=${endAt}`);
+        const res = await axios.get(`https://economia.awesomeapi.com.br/${data.from}-${data.to || "BRL"}/10?start_date=${startAt}&end_date=${endAt}`);
         const day = res.data.slice(0, 1)[0];
         const otherDays = res.data.slice(1, res.data.length);
-        const currencyAlredyInInterests = ctx.user.interests.find(interest => interest.name === day.code);
+        const currencyAlredyInInterests = ctx.user.interests.find(interest => interest.from === day.code);
         if (!currencyAlredyInInterests) {
             const interest = Interest.create({
-                name: day.code
+                from: day.code,
+                to: day.to
             });
             await ctx.BaseContext.usersRepository.updateUserInterests(ctx.user, interest);
         }

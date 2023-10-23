@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 
 export type ICurrency = {
   code: string;
+  codein: string
   name: string;
   high: string;
   low: string;
@@ -12,7 +13,9 @@ export type ICurrency = {
 
 export class Currency {
   id: string;
-  code: string;
+  from: string;
+  code: string
+  to: string
   name: string;
   high: string;
   low: string;
@@ -25,8 +28,10 @@ export class Currency {
     if (!data.userId) {
       throw new Error("Ops, user not found");
     }
+    this.code = data.code
     this.id = randomUUID();
-    this.code = data.code;
+    this.from = data.code;
+    this.to = data.codein
     this.name = data.name;
     this.high = data.high;
     this.low = data.low;

@@ -1,6 +1,7 @@
 
 export interface IInterest{
-    name: string
+    from: string
+    to?: string
     targetValue?: number
   }
 
@@ -19,12 +20,15 @@ export interface Last15DaysInterestProps {
 }
 
 export class Interest {
-    name: string
+    from: string
+    to: string
     targetValue: number
     createdAt: Date
+    fromTo: string
 
    private constructor(data: IInterest ){
-        this.name = data.name
+        this.from = data.from
+        this.to = data.to || "BRL"
         this.targetValue = data.targetValue || 0
         this.createdAt = new Date()
     }

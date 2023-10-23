@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer, BaseContext } from "@apollo/server";
-import {  StartStandaloneServerOptions, startStandaloneServer } from "@apollo/server/standalone";
 import { main } from "./utils/db/mongoose.start.js";
 import { typeDefs } from "./schemas.gql.js";
 import { passwordHash } from "./utils/hash/index.js";
@@ -24,7 +23,7 @@ type ServicesProps = {
 
 export interface ContextProps {
   user?: User
-  BaseContext: ServicesProps
+  BaseContext: ServicesProps 
 }
 
 const app = express();

@@ -10,7 +10,6 @@ import { updateInterest } from "./modules/Interest/resolvers/mutation/updateInte
 import { getUserLast15DaysFromInterests } from "./modules/users/resolvers/query/interests.query.js";
 import { deleteInterest } from "./modules/Interest/resolvers/mutation/deleteInterest.mutation.js";
 import { createCurrencyByPeriod } from "./modules/currency/resolvers/mutation/createCurrencyByPeriod.mutation.js";
-
 export const resolvers = {
     Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests },
     Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest,createCurrencyByPeriod },

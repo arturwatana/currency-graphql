@@ -3,7 +3,7 @@ import { ContextProps } from "../../../../index.js";
 import { IInterest, Interest } from "../../model/Interest.model.js";
 
 interface UpdateInterestDTO {
-    name: string
+    from: string
     targetValue: number
 }
 

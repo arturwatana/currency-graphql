@@ -22,7 +22,7 @@ export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, c
     try {
         const last15DaysFromInterests = userInterests.map(async (interest) => {
             const res: any = await axios.get(
-              `https://economia.awesomeapi.com.br/json/daily/${interest.name}-BRL/15`
+              `https://economia.awesomeapi.com.br/json/daily/${interest.from}-${interest.to}/15`
             );
             const last14Days = await res.data.slice(1)
             const last15FromUniqueInterest = {

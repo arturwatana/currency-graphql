@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
-import { CurrencyType } from "../../model/currencyType.model";
 import { ContextProps } from "../../../..";
+import { Currency } from "../../model/currency.model";
 
 
 export const getLastSearchByName = async (_, { name }, ctx: ContextProps) => {
@@ -17,7 +17,7 @@ export const getLastSearchByName = async (_, { name }, ctx: ContextProps) => {
 
   const lastSearch = userSearches
     .reverse()
-    .find((search: CurrencyType) => search.code === name);
+    .find((search: Currency) => search.from === name);
 
   if (!lastSearch) throw new Error("Not found last search");
 

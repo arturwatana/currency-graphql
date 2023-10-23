@@ -2,6 +2,8 @@ export const typeDefs = `
 type Currency {
   code: String!
   name: String!
+  from: String!
+  to: String!
   high: String!
   id: String
   queryDate: String!
@@ -14,6 +16,7 @@ type CurrencyPeriod {
   code: String!
   name: String!
   high: String!
+  codein: String!
   id: String
   queryDate: String!
   low: String!
@@ -71,9 +74,10 @@ type LoginResDTO {
 }
 
 type Interest {
-  name: String
-  targetValue: Int
-  createdAt: Date
+  from: String!
+  to: String!
+  targetValue: Int!
+  createdAt: Date!
 }
 
 scalar Date
@@ -87,7 +91,8 @@ input InterestDTO{
   targetValue: Int!
 }
 input CurrencyReq {
-  name: String!
+  from: String!
+  to: String
 }
 
 input DeleteInterestDTO {
@@ -96,6 +101,8 @@ input DeleteInterestDTO {
 input CreateCurrencyByPeriodDTO {
   startAt: String!
   endAt: String!
+  from: String!
+  to: String
 }
 
   type Query {

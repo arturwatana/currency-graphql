@@ -2,7 +2,8 @@ import axios from "axios";
 import { GraphQLError } from "graphql";
 import { Currency } from "../../model/currency.model.js";
 import { Interest } from "../../../Interest/model/Interest.model.js";
-export const createCurrency = async (_, data, ctx) => {
+import { formatUnixDate } from "../../../../utils/formatTimestamp/index.js";
+export const createCurrency = async (_, { data }, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
             extensions: {
@@ -11,7 +12,7 @@ export const createCurrency = async (_, data, ctx) => {
             },
         });
     try {
-        const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.data.name}`);
+        const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.from}-${data.to || "BRL"}`);
         const key = Object.keys(res.data);
         const user = ctx.user;
         const currencyData = {
@@ -19,11 +20,17 @@ export const createCurrency = async (_, data, ctx) => {
             queryDate: res.data[key[0]].create_date,
             userId: user.id,
         };
+        currencyData.timestamp = formatUnixDate(+currencyData.timestamp);
         const currency = Currency.create(currencyData);
-        const currencyAlredyInInterests = user.interests.find(interest => interest.name === currency.code);
+        const currencyAlredyInInterests = user.interests.find(interest => {
+            if (interest.from === currency.from && interest.to === currency.to) {
+                return interest;
+            }
+        });
         if (!currencyAlredyInInterests) {
             const interest = Interest.create({
-                name: currency.code
+                from: currency.from,
+                to: currency.to
             });
             await ctx.BaseContext.usersRepository.updateUserInterests(user, interest);
         }

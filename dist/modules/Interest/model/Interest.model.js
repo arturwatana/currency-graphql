@@ -1,6 +1,7 @@
 export class Interest {
     constructor(data) {
-        this.name = data.name;
+        this.from = data.from;
+        this.to = data.to || "BRL";
         this.targetValue = data.targetValue || 0;
         this.createdAt = new Date();
     }

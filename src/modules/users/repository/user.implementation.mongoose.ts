@@ -5,10 +5,11 @@ import { UserMongo } from "../model/user.schema.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMongooseRepository implements IUserRepository {
+
   async deleteInterest(username: string, interestName: string): Promise<User> {
     const user = await this.getUserByUsername(username)
     const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
-      if(interest.name === interestName){
+      if(interest.from === interestName){
         return
       }
       return interest
@@ -95,15 +96,7 @@ export class UserMongooseRepository implements IUserRepository {
 
 
   async updateUserInterests(user: User, interest: Interest): Promise<User> {
-   const interestAlreadyExists = user.interests.find(savedInterest => savedInterest.name === interest.name)
-   if(interestAlreadyExists){
-    if(interestAlreadyExists.targetValue != interest.targetValue){
-      const interestIndex = user.interests.findIndex(savedInterest => savedInterest.name === interestAlreadyExists.name)
-      user.interests[interestIndex].targetValue = interest.targetValue
-    }
-  } else {
     user.interests.push(interest)
-  }
     await UserMongo.updateOne(
       {
         id: user.id,
@@ -116,7 +109,7 @@ export class UserMongooseRepository implements IUserRepository {
   
   async updateInterestTargetValue(username: string, interestName: string, targetValue: number): Promise<Interest> {
     const user = await this.getUserByUsername(username);
-    const interestIndex = user.interests.findIndex(interest => interest.name.toLowerCase() === interestName.toLowerCase())
+    const interestIndex = user.interests.findIndex(interest => interest.from.toLowerCase() === interestName.toLowerCase())
     user.interests[interestIndex].targetValue = targetValue
     await UserMongo.updateOne(
       {
@@ -134,5 +127,8 @@ export class UserMongooseRepository implements IUserRepository {
     const updatedUser = await this.getUserByUsername(user.username)
     return updatedUser.interests
   }
+
+
+
 
 }

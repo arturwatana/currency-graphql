@@ -3,7 +3,7 @@ export class UserMongooseRepository {
     async deleteInterest(username, interestName) {
         const user = await this.getUserByUsername(username);
         const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
-            if (interest.name === interestName) {
+            if (interest.from === interestName) {
                 return;
             }
             return interest;
@@ -73,16 +73,7 @@ export class UserMongooseRepository {
         return updatedUser;
     }
     async updateUserInterests(user, interest) {
-        const interestAlreadyExists = user.interests.find(savedInterest => savedInterest.name === interest.name);
-        if (interestAlreadyExists) {
-            if (interestAlreadyExists.targetValue != interest.targetValue) {
-                const interestIndex = user.interests.findIndex(savedInterest => savedInterest.name === interestAlreadyExists.name);
-                user.interests[interestIndex].targetValue = interest.targetValue;
-            }
-        }
-        else {
-            user.interests.push(interest);
-        }
+        user.interests.push(interest);
         await UserMongo.updateOne({
             id: user.id,
         }, { interests: user.interests });
@@ -91,7 +82,7 @@ export class UserMongooseRepository {
     }
     async updateInterestTargetValue(username, interestName, targetValue) {
         const user = await this.getUserByUsername(username);
-        const interestIndex = user.interests.findIndex(interest => interest.name.toLowerCase() === interestName.toLowerCase());
+        const interestIndex = user.interests.findIndex(interest => interest.from.toLowerCase() === interestName.toLowerCase());
         user.interests[interestIndex].targetValue = targetValue;
         await UserMongo.updateOne({
             id: user.id,

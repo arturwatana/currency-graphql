@@ -4,8 +4,10 @@ export class Currency {
         if (!data.userId) {
             throw new Error("Ops, user not found");
         }
-        this.id = randomUUID();
         this.code = data.code;
+        this.id = randomUUID();
+        this.from = data.code;
+        this.to = data.codein;
         this.name = data.name;
         this.high = data.high;
         this.low = data.low;
