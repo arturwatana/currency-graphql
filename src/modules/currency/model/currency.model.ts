@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import validateSQLInjection from "../../../utils/validateSQLInjection";
 
 export type ICurrency = {
   code: string;

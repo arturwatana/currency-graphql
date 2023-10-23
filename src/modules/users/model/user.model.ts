@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Currency } from "../../currency/model/currency.model";
 import { Interest } from "../../Interest/model/Interest.model";
+import { validateUserInfo } from "./validateUserInfo.js";
 
 export type IUser = {
   username: string;
@@ -23,6 +24,7 @@ export class User {
     if (!email || !username || !password) {
       throw new Error("Ops, faltaram informacoes");
     }
+    validateUserInfo({email,username,password})
 
     this.id = randomUUID();
     this.username = username.toLowerCase();

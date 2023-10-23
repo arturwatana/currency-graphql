@@ -4,6 +4,7 @@ import { GraphQLError } from "graphql";
 import { Interest } from "../../../Interest/model/Interest.model.js";
 import { Currency } from "../../model/currency.model.js";
 import { formatUnixDate } from "../../../../utils/formatTimestamp/index.js";
+import validateSQLInjection from "../../../../utils/validateSQLInjection/index.js";
 
 interface CurrencyByPeriodReq {
   data: {
@@ -16,6 +17,7 @@ interface CurrencyByPeriodReq {
 
 
 export const createCurrencyByPeriod = async (_, {data}: CurrencyByPeriodReq, ctx: ContextProps) => {
+  validateSQLInjection([data.from, data.to, data.startAt, data.endAt])
     if (!ctx.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {
