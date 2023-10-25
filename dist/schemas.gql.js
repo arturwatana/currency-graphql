@@ -25,6 +25,14 @@ type CurrencyPeriod {
   otherDays: [Currency!]!
 }
 
+type Notification {
+  name: String!
+  description: String!
+  read: Boolean
+  userId: String!
+  createdAt: Date!
+}
+
 type Last15DaysFromInterest {
   code: String!
   codein: String!
@@ -57,7 +65,8 @@ type User {
   email: String!
   createdAt: Date!
   searches: [Currency!]!
-  interests: [Interest]!
+  interests: [Interest!]!
+  notifications: [Notification]!
 }
 
 input UserDTO {
@@ -78,6 +87,16 @@ type Interest {
   to: String!
   targetValue: Int!
   createdAt: Date!
+  id: String!
+  reached: Boolean!
+}
+type InterestToNotify {
+  from: String!
+  to: String!
+  targetValue: Int!
+  createdAt: Date!
+  id: String!
+  userId: String!
 }
 
 scalar Date
@@ -88,6 +107,11 @@ input LoginUserDTO{
 }
 input InterestDTO{
   name: String!
+  targetValue: Int!
+}
+input updateInterestTargetValueDTO{
+  from: String!
+  to: String!
   targetValue: Int!
 }
 input CurrencyReq {
@@ -108,13 +132,16 @@ input CreateCurrencyByPeriodDTO {
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
+    getUserIdByToken:String!
     getUserLast15DaysFromInterests:[Last15DaysFromInterest!]!
     users:[User!]!
+    getNotify:[InterestToNotify!]!
   }
   type Mutation {
     createCurrency(data: CurrencyReq!): Currency!
     createCurrencyByPeriod(data: CreateCurrencyByPeriodDTO!): CurrencyPeriod
     updateInterest(data: InterestDTO!): User!
+    updateInterestTargetValue(data: updateInterestTargetValueDTO!): Interest!
     deleteCurrency(currencyId: String!): User
     deleteInterest(data: DeleteInterestDTO!): User
     createUser(data: UserDTO): User

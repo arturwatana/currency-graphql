@@ -4,7 +4,7 @@ import { ContextProps } from "../../../../index.js";
 import { Currency, ICurrency } from "../../model/currency.model.js";
 import { Interest } from "../../../Interest/model/Interest.model.js";
 import { formatUnixDate } from "../../../../utils/formatTimestamp/index.js";
-import validateSQLInjection from "../../../../utils/validateSQLInjection/index.js";
+import { CurrencyMemoryRepository } from "../../repositories/currency.implementation.repository.js";
 
 type CurrencyRequest = {
   data: {
@@ -14,7 +14,6 @@ type CurrencyRequest = {
 };
 
 export const createCurrency = async (_, {data}: CurrencyRequest, ctx: ContextProps) => {
-  validateSQLInjection([data.from, data.to])
   if (!ctx.user)
     throw new GraphQLError("User is not authenticated", {
       extensions: {

@@ -1,10 +1,8 @@
-import validateSQLInjection from "../../../utils/validateSQLInjection/index.js";
 import { IUser } from "./user.model.js";
 
 
 
 export function validateUserInfo({email,password,username}: IUser){
-    validateSQLInjection([email,password,username])
     if(!username){
         throw new Error("Ops, ficou faltando o username")
     }

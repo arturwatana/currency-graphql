@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 
 export interface IInterest{
     from: string
@@ -20,16 +21,19 @@ export interface Last15DaysInterestProps {
 }
 
 export class Interest {
+    id: string
     from: string
     to: string
     targetValue: number
+    reached: boolean
     createdAt: Date
-    fromTo: string
 
    private constructor(data: IInterest ){
+    this.id = randomUUID()
         this.from = data.from
         this.to = data.to || "BRL"
         this.targetValue = data.targetValue || 0
+        this.reached = false
         this.createdAt = new Date()
     }
 

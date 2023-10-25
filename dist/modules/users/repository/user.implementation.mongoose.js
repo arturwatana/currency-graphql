@@ -80,9 +80,14 @@ export class UserMongooseRepository {
         const updatedUser = await this.getUserByUsername(user.username);
         return updatedUser;
     }
-    async updateInterestTargetValue(username, interestName, targetValue) {
+    async updateInterestTargetValue(username, { from, to }, targetValue) {
         const user = await this.getUserByUsername(username);
-        const interestIndex = user.interests.findIndex(interest => interest.from.toLowerCase() === interestName.toLowerCase());
+        const interestIndex = user.interests.findIndex(interest => {
+            if (interest.from.toLowerCase() === from.toLowerCase() && interest.to.toLowerCase() === to.toLowerCase()) {
+                return interest;
+            }
+            return;
+        });
         user.interests[interestIndex].targetValue = targetValue;
         await UserMongo.updateOne({
             id: user.id,
@@ -93,5 +98,31 @@ export class UserMongooseRepository {
     async getUserInterests(user) {
         const updatedUser = await this.getUserByUsername(user.username);
         return updatedUser.interests;
+    }
+    async getUsersTargets() {
+        const users = await UserMongo.find();
+        const userInterests = users.map(user => {
+            return {
+                userId: user.id,
+                interests: user.interests
+            };
+        });
+        return userInterests;
+    }
+    async updateUserNotifications(userId, notification) {
+        const user = await UserMongo.findOne({
+            id: userId
+        });
+        const notificationAlreadyExists = user.notifications.find(notify => notify.name === notification.name);
+        if (notificationAlreadyExists) {
+            return notificationAlreadyExists;
+        }
+        user.notifications.push(notification);
+        await UserMongo.updateOne({
+            id: user.id,
+        }, { notifications: user.notifications });
+        const updatedUser = await this.getUserByUsername(user.username);
+        const notificationUpdated = updatedUser.notifications.find(notify => notify.name === notification.name);
+        return notificationUpdated;
     }
 }

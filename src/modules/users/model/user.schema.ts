@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  notifications: {
+    type: Array,
+    required: true,
+  },
 });
 
 export const UserMongo = mongoose.model("User", userSchema);

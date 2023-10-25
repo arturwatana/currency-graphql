@@ -13,6 +13,7 @@ export class User {
         this.password = password;
         this.searches = [];
         this.interests = [];
+        this.notifications = [];
     }
     static create(data) {
         const user = new User(data);

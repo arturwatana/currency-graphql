@@ -1,5 +1,5 @@
 import { ContextProps } from "../../../../index.js";
 
-export const users = (_, data ,ctx : ContextProps) => {
-  return ctx.BaseContext.usersRepository.showAll();
+export const users = async (_, data ,ctx : ContextProps) => {
+  return await ctx.BaseContext.usersRepository.showAll();
 };
