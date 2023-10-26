@@ -44,6 +44,7 @@ export const createCurrencyByPeriod = async (_, { data }, ctx) => {
             ...currency,
             otherDays: otherDaysWithUnixFormated
         };
+        console.log(result);
         return result;
     }
     catch (err) {

@@ -53,7 +53,6 @@ app.use(
     context: async ({ req }) => {
         const user = await getTokenAndSetUser(req.headers.authorization)
         return { user, BaseContext: services };
-    
     }
   }),
 );

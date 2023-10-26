@@ -14,6 +14,8 @@ type Currency {
 
 type CurrencyPeriod {
   code: String!
+  from: String!
+  to: String!
   name: String!
   high: String!
   codein: String!

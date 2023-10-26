@@ -15,5 +15,8 @@ export const getUserIdByToken = async (_, {data}: getUserByTokenProps, ctx: Cont
         http: { status: 401 },
       },
     })
-    return ctx.user.id
+    return{
+      username: ctx.user.username,
+      email: ctx.user.email
+    }
 }
