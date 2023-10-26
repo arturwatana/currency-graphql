@@ -7,5 +7,8 @@ export const getUserIdByToken = async (_, { data }, ctx) => {
                 http: { status: 401 },
             },
         });
-    return ctx.user.id;
+    return {
+        username: ctx.user.username,
+        email: ctx.user.email
+    };
 };

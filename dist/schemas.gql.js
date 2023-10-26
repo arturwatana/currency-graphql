@@ -83,6 +83,10 @@ type LoginResDTO {
   username: String!
   token: String!
 }
+type getUserDTO {
+  username: String!
+  email: String!
+}
 
 type Interest {
   from: String!
@@ -134,7 +138,7 @@ input CreateCurrencyByPeriodDTO {
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
-    getUserIdByToken:String!
+    getUserIdByToken:getUserDTO!
     getUserLast15DaysFromInterests:[Last15DaysFromInterest!]!
     users:[User!]!
     getNotify:[InterestToNotify!]!

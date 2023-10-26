@@ -15,7 +15,6 @@ import http from "http";
 import express from "express";
 import cors from "cors";
 import { usersRepository } from "./modules/users/repository/index.js";
-import "./utils/cron/notification.cron.js";
 
 type ServicesProps = {
   usersRepository: IUserRepository
