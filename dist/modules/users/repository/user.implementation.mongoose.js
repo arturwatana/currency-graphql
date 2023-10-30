@@ -2,7 +2,6 @@ import { UserMongo } from "../model/user.schema.js";
 export class UserMongooseRepository {
     async deleteInterest(email, interestName) {
         const user = await this.getUserByEmail(email);
-        console.log(interestName);
         const interestFrom = interestName.split("-")[0];
         const interestTo = interestName.split("-")[1];
         const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
