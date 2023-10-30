@@ -34,18 +34,6 @@ export const createCurrency = async (_, {data}: CurrencyRequest, ctx: ContextPro
     };
     currencyData.timestamp = formatUnixDate(+currencyData.timestamp)
     const currency: Currency = Currency.create(currencyData)
-    const currencyAlredyInInterests = user.interests.find(interest => {
-      if(interest.from === currency.from && interest.to === currency.to){
-        return interest
-      }
-    })
-    if(!currencyAlredyInInterests){
-       const interest = Interest.create({
-        from: currency.from,
-        to: currency.to
-       })
-       await ctx.BaseContext.usersRepository.updateUserInterests(user, interest)
-    }
     user.searches.push(currency);
     await ctx.BaseContext.usersRepository.updateUserSearches(user)
     return currency;
