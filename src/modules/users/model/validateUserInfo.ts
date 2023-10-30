@@ -2,12 +2,12 @@ import { IUser } from "./user.model.js";
 
 
 
-export function validateUserInfo({email,password,username}: IUser){
-    if(!username){
-        throw new Error("Ops, ficou faltando o username")
+export function validateUserInfo({email,password,fullName}: IUser){
+    if(!fullName){
+        throw new Error("Ops, ficou faltando o seu nome")
     }
-    if(username.length <= 3){
-        throw new Error("Seu username precisa ter mais que 3 caracteres")
+    if(fullName.length <= 2){
+        throw new Error("Seu nome precisa ter mais que 2 caracteres")
     }
     if(!email){
         throw new Error("Ops, ficou faltando o email")

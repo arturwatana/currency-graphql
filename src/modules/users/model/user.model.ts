@@ -5,7 +5,7 @@ import { validateUserInfo } from "./validateUserInfo.js";
 import { Notification } from "../../notification/model/notification.model";
 
 export type IUser = {
-  username: string;
+  fullName: string;
   password: string;
   email: string;
 };
@@ -14,7 +14,7 @@ export type IUser = {
 
 export class User {
   id: string;
-  username: string;
+  fullName: string;
   password: string;
   email: string;
   searches: Currency[];
@@ -22,14 +22,14 @@ export class User {
   interests: Interest[]
   notifications: Notification[]
 
-  private constructor({ email, username, password }: IUser) {
-    if (!email || !username || !password) {
+  private constructor({ email, fullName, password }: IUser) {
+    if (!email || !fullName || !password) {
       throw new Error("Ops, faltaram informacoes");
     }
-    validateUserInfo({email,username,password})
+    validateUserInfo({email,fullName,password})
 
     this.id = randomUUID();
-    this.username = username.toLowerCase();
+    this.fullName = fullName;
     this.email = email.toLowerCase();
     this.createdAt = new Date()
     this.password = password;

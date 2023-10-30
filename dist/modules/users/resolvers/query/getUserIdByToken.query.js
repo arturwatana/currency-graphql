@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-export const getUserIdByToken = async (_, { data }, ctx) => {
+export const getUserByToken = async (_, { data }, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("Ops, preciso que faca o login novamente", {
             extensions: {
@@ -8,7 +8,7 @@ export const getUserIdByToken = async (_, { data }, ctx) => {
             },
         });
     return {
-        username: ctx.user.username,
+        fullName: ctx.user.fullName,
         email: ctx.user.email
     };
 };

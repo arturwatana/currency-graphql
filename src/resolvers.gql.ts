@@ -11,10 +11,12 @@ import { getUserLast15DaysFromInterests } from "./modules/users/resolvers/query/
 import { deleteInterest } from "./modules/Interest/resolvers/mutation/deleteInterest.mutation.js";
 import { createCurrencyByPeriod } from "./modules/currency/resolvers/mutation/createCurrencyByPeriod.mutation.js";
 import { updateInterestTargetValue } from "./modules/Interest/resolvers/mutation/updateInterestTargetValue.mutation.js";
-import { getUserIdByToken } from "./modules/users/resolvers/query/getUserIdByToken.query.js";
+import { getUserByToken } from "./modules/users/resolvers/query/getUserIdByToken.query.js";
+import {createFreeCurrency} from "./modules/currency/resolvers/mutation/freeCurrency.mutation.js"
+import { createInterest } from "./modules/Interest/resolvers/mutation/createInterest.mutation.js";
 
 export const resolvers = {
-    Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests, getUserIdByToken },
-    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest,createCurrencyByPeriod, updateInterestTargetValue },
+    Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests, getUserByToken },
+    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest,createCurrencyByPeriod, updateInterestTargetValue, createFreeCurrency, createInterest },
   };
   

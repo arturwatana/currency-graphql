@@ -6,7 +6,7 @@ export async function getTokenAndSetUser(token) {
     if (!tokenIsValid) {
         return null;
     }
-    const user = await usersRepository.getUserByUsername(tokenIsValid);
+    const user = await usersRepository.getUserByEmail(tokenIsValid);
     if (user)
         return user || null;
 }

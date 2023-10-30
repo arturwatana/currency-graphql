@@ -2,34 +2,34 @@ export class UserMemoryRepository {
     constructor() {
         this.items = [];
     }
-    updateUserNotifications(userId, notification) {
+    getUserByToken(token) {
         throw new Error("Method not implemented.");
     }
-    getUsersTargets() {
-        throw new Error("Method not implemented.");
-    }
-    deleteInterest(username, interestName) {
-        throw new Error("Method not implemented.");
-    }
-    getUserInterests(user) {
-        throw new Error("Method not implemented.");
-    }
-    updateInterestTargetValue(userId, interestName, targetValue) {
-        throw new Error("Method not implemented.");
-    }
-    updateUserInterests(user, interest) {
-        throw new Error("Method not implemented.");
-    }
-    deleteCurrency(userId, currencyId) {
+    getUserByEmail(email) {
         throw new Error("Method not implemented.");
     }
     updateUserSearches(user) {
         throw new Error("Method not implemented.");
     }
-    getUserByUsername(username) {
+    updateUserInterests(user, interest) {
         throw new Error("Method not implemented.");
     }
-    getUserByToken(token) {
+    updateUserNotifications(userId, notification) {
+        throw new Error("Method not implemented.");
+    }
+    updateInterestTargetValue(userId, interestName, targetValue) {
+        throw new Error("Method not implemented.");
+    }
+    deleteCurrency(email, currencyId) {
+        throw new Error("Method not implemented.");
+    }
+    deleteInterest(email, interestName) {
+        throw new Error("Method not implemented.");
+    }
+    getUserInterests(user) {
+        throw new Error("Method not implemented.");
+    }
+    getUsersTargets() {
         throw new Error("Method not implemented.");
     }
     async save(data) {

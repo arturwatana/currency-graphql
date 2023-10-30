@@ -1,9 +1,6 @@
 import { randomUUID } from "node:crypto";
 export class Currency {
     constructor(data) {
-        if (!data.userId) {
-            throw new Error("Ops, user not found");
-        }
         this.code = data.code;
         this.id = randomUUID();
         this.from = data.code;
@@ -12,7 +9,7 @@ export class Currency {
         this.high = data.high;
         this.low = data.low;
         this.create_date = new Date().toDateString();
-        this.userId = data.userId;
+        this.userId = data.userId || "";
         this.queryDate = data.queryDate;
         this.timestamp = data.timestamp;
     }

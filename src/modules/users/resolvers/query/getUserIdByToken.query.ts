@@ -7,7 +7,7 @@ interface getUserByTokenProps {
     }
 }
 
-export const getUserIdByToken = async (_, {data}: getUserByTokenProps, ctx: ContextProps) => {
+export const getUserByToken = async (_, {data}: getUserByTokenProps, ctx: ContextProps) => {
     if (!ctx.user)
     throw new GraphQLError("Ops, preciso que faca o login novamente", {
       extensions: {
@@ -16,7 +16,7 @@ export const getUserIdByToken = async (_, {data}: getUserByTokenProps, ctx: Cont
       },
     })
     return{
-      username: ctx.user.username,
+      fullName: ctx.user.fullName,
       email: ctx.user.email
     }
 }

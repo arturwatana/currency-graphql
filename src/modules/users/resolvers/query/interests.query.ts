@@ -3,7 +3,7 @@ import { ContextProps } from "../../../..";
 import { GraphQLError } from "graphql";
 
 type getInterestsDTO = {
-    username: string;
+    email: string;
   };
   
   type getInterestsReq = {
@@ -11,7 +11,7 @@ type getInterestsDTO = {
   }
 
 export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, ctx: ContextProps) => {
-    if (!ctx.user)
+  if (!ctx.user)
     throw new GraphQLError("Ops, preciso que faca o login novamente", {
       extensions: {
         code: "UNAUTHENTICATED",
@@ -20,20 +20,19 @@ export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, c
     })
     const userInterests = await ctx.BaseContext.usersRepository.getUserInterests(ctx.user)
     try {
-        const last15DaysFromInterests = userInterests.map(async (interest) => {
+        const last15DaysFromInterests = await Promise.all(userInterests.map(async (interest) => {
             const res: any = await axios.get(
               `https://economia.awesomeapi.com.br/json/daily/${interest.from}-${interest.to}/15`
             );
             const last14Days = await res.data.slice(1)
             const last15FromUniqueInterest = {
                 ...res.data[0],
+                targetValue: interest.targetValue,
                 lastDays: last14Days   
             }
             return last15FromUniqueInterest
-        })
-
-        return last15DaysFromInterests
-        
+        }))
+        return  last15DaysFromInterests
       } catch (err) {
         throw new Error(err.response.data.message);
       }

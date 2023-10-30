@@ -12,11 +12,12 @@ export type ChangeInterestProps = {
 
 export class UserMongooseRepository implements IUserRepository {
 
-
-  async deleteInterest(username: string, interestName: string): Promise<User> {
-    const user = await this.getUserByUsername(username)
+  async deleteInterest(email: string, interestName: string): Promise<User> {
+    const user = await this.getUserByEmail(email)
+    const interestFrom = interestName.split("-")[0]
+    const interestTo = interestName.split("-")[1]
     const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
-      if(interest.from === interestName){
+      if(interest.from === interestFrom && interest.to === interestTo){
         return
       }
       return interest
@@ -27,7 +28,7 @@ export class UserMongooseRepository implements IUserRepository {
       },
       { interests: userInterestsWithouDeletedInterest }
     );
-    const updatedUser = await this.getUserByUsername(username)
+    const updatedUser = await this.getUserByEmail(email)
     return updatedUser
   }
 
@@ -37,7 +38,7 @@ export class UserMongooseRepository implements IUserRepository {
       email: data.email,
       id: data.id,
       password: data.password,
-      username: data.username,
+      fullName: data.fullName,
       searches: data.searches,
       createdAt: data.createdAt,
       interests: data.interests
@@ -48,6 +49,8 @@ export class UserMongooseRepository implements IUserRepository {
   async showAll(): Promise<User[]> {
     return await UserMongo.find();
      
+    
+     
   }
   async getUserByToken(token: string): Promise<User> {
     const user = await UserMongo.findOne({
@@ -56,9 +59,9 @@ export class UserMongooseRepository implements IUserRepository {
     return user;
   }
 
-  async getUserByUsername(username: string): Promise<User | null> {
+  async getUserByEmail(email: string): Promise<User | null> {
     const user = await UserMongo.findOne({
-      username,
+      email,
     });
     return user || null;
   }
@@ -69,7 +72,7 @@ export class UserMongooseRepository implements IUserRepository {
       },
       { searches: user.searches }
     );
-    const updatedUser = this.getUserByUsername(user.username);
+    const updatedUser = this.getUserByEmail(user.email);
     return updatedUser;
   }
 
@@ -98,7 +101,7 @@ export class UserMongooseRepository implements IUserRepository {
           searches: currenciesWithoutDeletedCurrency
         }
        )
-       const updatedUser = await this.getUserByUsername(user.username);
+       const updatedUser = await this.getUserByEmail(user.email);
        return updatedUser;
   }
 
@@ -111,12 +114,12 @@ export class UserMongooseRepository implements IUserRepository {
       },
       { interests: user.interests }
     );
-    const updatedUser = await this.getUserByUsername(user.username);
+    const updatedUser = await this.getUserByEmail(user.email);
     return updatedUser;
   }
   
-  async updateInterestTargetValue(username: string, {from,to}: ChangeInterestProps, targetValue: number): Promise<Interest> {
-    const user = await this.getUserByUsername(username);
+  async updateInterestTargetValue(email: string, {from,to}: ChangeInterestProps, targetValue: number): Promise<Interest> {
+    const user = await this.getUserByEmail(email);
     const interestIndex = user.interests.findIndex(interest => {
       if(interest.from.toLowerCase() === from.toLowerCase() && interest.to.toLowerCase() === to.toLowerCase()){
         return interest
@@ -130,14 +133,14 @@ export class UserMongooseRepository implements IUserRepository {
       },
       { interests: user.interests }
     );
-    const updatedUser = await this.getUserByUsername(user.username);
+    const updatedUser = await this.getUserByEmail(user.email);
 
       return updatedUser.interests[interestIndex]
   }
 
 
   async getUserInterests(user: User): Promise<Interest[]> {
-    const updatedUser = await this.getUserByUsername(user.username)
+    const updatedUser = await this.getUserByEmail(user.email)
     return updatedUser.interests
   }
 
@@ -168,7 +171,7 @@ export class UserMongooseRepository implements IUserRepository {
       },
       { notifications: user.notifications }
     );
-    const updatedUser = await this.getUserByUsername(user.username);
+    const updatedUser = await this.getUserByEmail(user.email);
     const notificationUpdated = updatedUser.notifications.find(notify => notify.name === notification.name)
     return notificationUpdated;
   }

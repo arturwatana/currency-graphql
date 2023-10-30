@@ -19,6 +19,6 @@ export const deleteInterest = async (_,{data}: deleteInterestReq, ctx : ContextP
       },
     });
 
-    const updatedUser = await ctx.BaseContext.usersRepository.deleteInterest(ctx.user.username, data.interestName)
+    const updatedUser = await ctx.BaseContext.usersRepository.deleteInterest(ctx.user.email, data.interestName)
     return updatedUser
 }

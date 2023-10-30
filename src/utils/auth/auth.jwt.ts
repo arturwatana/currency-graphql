@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export class AuthJWT implements IAuth {
   sign(payload: User): string {
     const payloadMapper = {
-      username: payload.username,
+      fullName: payload.fullName,
       email: payload.email,
       id: payload.id,
     };
@@ -19,7 +19,7 @@ export class AuthJWT implements IAuth {
     try {
       const tokenIsValid = jwt.verify(token, secret);
       if (typeof tokenIsValid != "string") {
-        return tokenIsValid.payloadMapper.username;
+        return tokenIsValid.payloadMapper.email;
       }
       return tokenIsValid;
     } catch (err) {

@@ -26,15 +26,17 @@ export class Interest {
     to: string
     targetValue: number
     reached: boolean
+    favorite: boolean
     createdAt: Date
 
    private constructor(data: IInterest ){
-    this.id = randomUUID()
+        this.id = randomUUID()
         this.from = data.from
         this.to = data.to || "BRL"
         this.targetValue = data.targetValue || 0
         this.reached = false
         this.createdAt = new Date()
+        this.favorite = false
     }
 
     static create(data: IInterest){

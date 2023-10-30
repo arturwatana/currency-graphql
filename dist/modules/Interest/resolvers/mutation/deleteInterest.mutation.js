@@ -7,6 +7,6 @@ export const deleteInterest = async (_, { data }, ctx) => {
                 http: { status: 401 },
             },
         });
-    const updatedUser = await ctx.BaseContext.usersRepository.deleteInterest(ctx.user.username, data.interestName);
+    const updatedUser = await ctx.BaseContext.usersRepository.deleteInterest(ctx.user.email, data.interestName);
     return updatedUser;
 };

@@ -3,7 +3,7 @@ import { authService } from "../../../../utils/auth/authService.js";
 import { passwordHash } from "../../../../utils/hash/index.js";
 
 type LoginDTO = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -13,7 +13,7 @@ type LoginReq = {
 
 
 export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
-  const user = await ctx.BaseContext.usersRepository.getUserByUsername(data.username.toLowerCase());
+  const user = await ctx.BaseContext.usersRepository.getUserByEmail(data.email.toLowerCase());
   if (!user) {
     throw new Error("Usuário ou senha incorretos");
   }
@@ -24,7 +24,7 @@ export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
   const token = authService.sign(user);
   return {
     id: user.id,
-    username: user.username,
+    email: user.email,
     token,
   };
 };

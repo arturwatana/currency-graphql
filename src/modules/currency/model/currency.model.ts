@@ -20,14 +20,11 @@ export class Currency {
   high: string;
   low: string;
   create_date: string;
-  userId: string;
+  userId?: string;
   queryDate: Date;
   timestamp: Date
 
   private constructor(data: ICurrency) {
-    if (!data.userId) {
-      throw new Error("Ops, user not found");
-    }
     this.code = data.code
     this.id = randomUUID();
     this.from = data.code;
@@ -36,7 +33,7 @@ export class Currency {
     this.high = data.high;
     this.low = data.low;
     this.create_date = new Date().toDateString()
-    this.userId = data.userId;
+    this.userId = data.userId || "";
     this.queryDate = data.queryDate;
     this.timestamp = data.timestamp
   }

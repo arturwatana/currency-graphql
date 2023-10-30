@@ -8,9 +8,9 @@ type CreateUserReq = {
 
 export const createUser = async (_, { data }: CreateUserReq, ctx: ContextProps) => {
   const user = User.create(data);
-  const userAlreadyExists = await ctx.BaseContext.usersRepository.getUserByUsername(user.username)
+  const userAlreadyExists = await ctx.BaseContext.usersRepository.getUserByEmail(user.email)
   if(userAlreadyExists){
-    throw new Error("Usuário já existe") 
+    throw new Error("Email já cadastrado") 
   }
   user.password = await ctx.BaseContext.passwordHash.hash(data.password)
   await ctx.BaseContext.usersRepository.save(user);

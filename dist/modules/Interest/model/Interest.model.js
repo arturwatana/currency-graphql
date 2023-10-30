@@ -7,6 +7,7 @@ export class Interest {
         this.targetValue = data.targetValue || 0;
         this.reached = false;
         this.createdAt = new Date();
+        this.favorite = false;
     }
     static create(data) {
         const interest = new Interest(data);

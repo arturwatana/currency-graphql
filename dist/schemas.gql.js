@@ -43,6 +43,7 @@ type Last15DaysFromInterest {
   low: String!
   varBid: String!
   pctChange: String!
+  targetValue: Int!
   bid: String!
   ask: String!
   timestamp: String!
@@ -62,7 +63,7 @@ type LastDaysQuery{
 
 type User {
   id: String!
-  username: String!
+  fullName: String!
   password: String!
   email: String!
   createdAt: Date!
@@ -72,7 +73,7 @@ type User {
 }
 
 input UserDTO {
-  username: String!
+  fullName: String!
   password: String!
   email: String!
 }
@@ -80,11 +81,11 @@ input UserDTO {
 
 type LoginResDTO {
   id: String!
-  username: String!
+  email: String!
   token: String!
 }
 type getUserDTO {
-  username: String!
+  fullName: String!
   email: String!
 }
 
@@ -95,6 +96,7 @@ type Interest {
   createdAt: Date!
   id: String!
   reached: Boolean!
+  favorite: Boolean!
 }
 type InterestToNotify {
   from: String!
@@ -108,11 +110,12 @@ type InterestToNotify {
 scalar Date
 
 input LoginUserDTO{
-  username: String!
+  email: String!
   password: String!
 }
 input InterestDTO{
-  name: String!
+  from: String!
+  to: String!
   targetValue: Int!
 }
 input updateInterestTargetValueDTO{
@@ -138,14 +141,16 @@ input CreateCurrencyByPeriodDTO {
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
-    getUserIdByToken:getUserDTO!
+    getUserByToken:getUserDTO!
     getUserLast15DaysFromInterests:[Last15DaysFromInterest!]!
     users:[User!]!
     getNotify:[InterestToNotify!]!
   }
   type Mutation {
     createCurrency(data: CurrencyReq!): Currency!
+    createFreeCurrency(data: CurrencyReq!): Currency!
     createCurrencyByPeriod(data: CreateCurrencyByPeriodDTO!): CurrencyPeriod
+    createInterest(data:InterestDTO!): Interest!
     updateInterest(data: InterestDTO!): User!
     updateInterestTargetValue(data: updateInterestTargetValueDTO!): Interest!
     deleteCurrency(currencyId: String!): User
