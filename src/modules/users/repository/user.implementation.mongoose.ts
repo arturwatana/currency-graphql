@@ -16,6 +16,10 @@ export class UserMongooseRepository implements IUserRepository {
     const user = await this.getUserByEmail(email)
     const interestFrom = interestName.split("-")[0]
     const interestTo = interestName.split("-")[1]
+    const interestExists = user.interests.find(interest => interest.from === interestFrom && interest.to === interestTo)
+    if(!interestExists){
+      throw new Error("Ops, este interesse nao existe!")
+    }
     const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
       if(interest.from === interestFrom && interest.to === interestTo){
         return
