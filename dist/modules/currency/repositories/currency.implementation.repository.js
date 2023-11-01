@@ -56,21 +56,19 @@ export class CurrencyMemoryRepository {
             for (const interest of target.interests) {
                 for (const item of this.items) {
                     if (interest.from === item.code && interest.to === item.codein) {
+                        if (interest.notifyAttempts >= 3) {
+                            return;
+                        }
+                        interest.notifyAttempts++;
+                        await this.userRepository.updateUserInterests(target, interest);
                         if (+item.low <= interest.targetValue) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
                                 description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue} uma mínima de ${+item.low}`,
                                 userId: target.userId,
                             };
-                            const alreadyNotified = targetsToNotify.find((notify) => notify.name === data.name);
-                            if (alreadyNotified) {
-                                continue;
-                            }
                             const notify = Notification.create(data);
-                            const updatedNotify = await this.userRepository.updateUserNotifications(target.userId, notify);
-                            if (updatedNotify.read === true) {
-                                continue;
-                            }
+                            await this.userRepository.updateUserNotifications(target.userId, notify);
                             targetsToNotify.push(notify);
                         }
                     }

@@ -1,4 +1,4 @@
-import { Interest } from "../../Interest/model/Interest.model";
+import { Interest, TargetValueProps } from "../../Interest/model/Interest.model";
 import { Notification } from "../../notification/model/notification.model";
 import { User } from "../model/user.model";
 import { ChangeInterestProps } from "./user.implementation.mongoose";
@@ -11,9 +11,11 @@ export interface IUserRepository {
   updateUserSearches(user: User): Promise<User>;
   updateUserInterests(user: User, interest: Interest): Promise<User>;
   updateUserNotifications(userId: string, notification: Notification): Promise<Notification>;
-  updateInterestTargetValue(email: string, interestName: ChangeInterestProps, targetValue: number): Promise<Interest>
+  deleteUserExpiredNotifications(notifications: Notification[]): Promise<void>;
+  updateInterestTargetValue(email: string, interestName: ChangeInterestProps, targetValue: TargetValueProps): Promise<Interest>
   deleteCurrency(email: string, currencyId: string): Promise<User| null>
   deleteInterest(email: string, interestName: string): Promise<User| null>
   getUserInterests(user: User): Promise<Interest[]>
   getUsersTargets(): Promise<any[]>
+  deleteALL(): Promise<void>
 }

@@ -5,6 +5,8 @@ export type CurrencyType = {
   low: string;
   create_date: string;
   userId: string;
+  bid: string
+  ask: string
   id: string
   queryDate: Date;
 };

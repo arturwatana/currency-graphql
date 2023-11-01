@@ -1,11 +1,20 @@
-import { Interest } from "../../Interest/model/Interest.model.js";
+import { Interest, TargetValueProps } from "../../Interest/model/Interest.model.js";
 import { Notification } from "../../notification/model/notification.model.js";
 import { IUser, User } from "../model/user.model.js";
 import { ChangeInterestProps } from "./user.implementation.mongoose.js";
 import { IUserRepository } from "./user.repository.js";
 
 export class UserMemoryRepository implements IUserRepository {
-  getUserByToken(token: string): Promise<User> {
+  deleteALL(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  deleteUserExpiredNotifications(notifications: Notification[]): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  getUserByToken(token: string): Promise<User> 
+  {
     throw new Error("Method not implemented.");
   }
   getUserByEmail(email: string): Promise<User> {
@@ -20,7 +29,7 @@ export class UserMemoryRepository implements IUserRepository {
   updateUserNotifications(userId: string, notification: Notification): Promise<Notification> {
     throw new Error("Method not implemented.");
   }
-  updateInterestTargetValue(userId: string, interestName: ChangeInterestProps, targetValue: number): Promise<Interest> {
+  updateInterestTargetValue(userId: string, interestName: ChangeInterestProps, targetValue: TargetValueProps): Promise<Interest> {
     throw new Error("Method not implemented.");
   }
   deleteCurrency(email: string, currencyId: string): Promise<User> {

@@ -8,12 +8,12 @@ import { createCurrency } from "./modules/currency/resolvers/mutation/currency.m
 import { updateInterest } from "./modules/Interest/resolvers/mutation/updateInterest.mutation.js";
 import { getUserLast15DaysFromInterests } from "./modules/users/resolvers/query/interests.query.js";
 import { deleteInterest } from "./modules/Interest/resolvers/mutation/deleteInterest.mutation.js";
-import { createCurrencyByPeriod } from "./modules/currency/resolvers/mutation/createCurrencyByPeriod.mutation.js";
+// import { createCurrencyByPeriod } from "./modules/currency/resolvers/mutation/createCurrencyByPeriod.mutation.js";
 import { updateInterestTargetValue } from "./modules/Interest/resolvers/mutation/updateInterestTargetValue.mutation.js";
 import { getUserByToken } from "./modules/users/resolvers/query/getUserIdByToken.query.js";
 import { createFreeCurrency } from "./modules/currency/resolvers/mutation/freeCurrency.mutation.js";
 import { createInterest } from "./modules/Interest/resolvers/mutation/createInterest.mutation.js";
 export const resolvers = {
     Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests, getUserByToken },
-    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest, createCurrencyByPeriod, updateInterestTargetValue, createFreeCurrency, createInterest },
+    Mutation: { createCurrency, createUser, login, deleteCurrency, updateInterest, deleteInterest, updateInterestTargetValue, createFreeCurrency, createInterest },
 };

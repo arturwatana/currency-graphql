@@ -1,9 +1,15 @@
 import { randomUUID } from "node:crypto";
 
+export interface TargetValueProps{
+    buy: number
+    sell: number
+}
+
 export interface IInterest{
     from: string
     to?: string
-    targetValue?: number
+    targetValue: TargetValueProps
+    customMessage?: string
   }
 
 export interface Last15DaysInterestProps {
@@ -24,19 +30,20 @@ export class Interest {
     id: string
     from: string
     to: string
-    targetValue: number
-    reached: boolean
+    targetValue: TargetValueProps
+    customMessage: string
     favorite: boolean
     createdAt: Date
+    notifyAttempts: number
 
    private constructor(data: IInterest ){
         this.id = randomUUID()
         this.from = data.from
         this.to = data.to || "BRL"
-        this.targetValue = data.targetValue || 0
-        this.reached = false
+        this.targetValue = data.targetValue || {buy: 0, sell: 0} 
         this.createdAt = new Date()
         this.favorite = false
+        this.notifyAttempts = 0
     }
 
     static create(data: IInterest){

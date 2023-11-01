@@ -4,6 +4,10 @@ export class UserMongooseRepository {
         const user = await this.getUserByEmail(email);
         const interestFrom = interestName.split("-")[0];
         const interestTo = interestName.split("-")[1];
+        const interestExists = user.interests.find(interest => interest.from === interestFrom && interest.to === interestTo);
+        if (!interestExists) {
+            throw new Error("Ops, este interesse nao existe!");
+        }
         const userInterestsWithouDeletedInterest = user.interests.filter(interest => {
             if (interest.from === interestFrom && interest.to === interestTo) {
                 return;
@@ -30,6 +34,10 @@ export class UserMongooseRepository {
     }
     async showAll() {
         return await UserMongo.find();
+    }
+    async deleteALL() {
+        await UserMongo.deleteMany();
+        return;
     }
     async getUserByToken(token) {
         const user = await UserMongo.findOne({
@@ -75,7 +83,13 @@ export class UserMongooseRepository {
         return updatedUser;
     }
     async updateUserInterests(user, interest) {
-        user.interests.push(interest);
+        const interestIndex = user.interests.findIndex(userInterest => interest.from === userInterest.from && interest.to === userInterest.to);
+        if (interestIndex === -1) {
+            user.interests.push(interest);
+        }
+        else {
+            user.interests[interestIndex] = interest;
+        }
         await UserMongo.updateOne({
             id: user.id,
         }, { interests: user.interests });
@@ -83,6 +97,9 @@ export class UserMongooseRepository {
         return updatedUser;
     }
     async updateInterestTargetValue(email, { from, to }, targetValue) {
+        if (!targetValue.buy || !targetValue.sell) {
+            throw new Error("Ops, faltou especificar se o valor é de compra ou venda ");
+        }
         const user = await this.getUserByEmail(email);
         const interestIndex = user.interests.findIndex(interest => {
             if (interest.from.toLowerCase() === from.toLowerCase() && interest.to.toLowerCase() === to.toLowerCase()) {
@@ -126,5 +143,29 @@ export class UserMongooseRepository {
         const updatedUser = await this.getUserByEmail(user.email);
         const notificationUpdated = updatedUser.notifications.find(notify => notify.name === notification.name);
         return notificationUpdated;
+    }
+    async deleteUserExpiredNotifications(notifications) {
+        const notificationsToDelete = notifications.map(notify => {
+            const difInMilisec = Math.abs(+notify.createAt - +new Date());
+            const dayInMilisec = 1000 * 60 * 60 * 24;
+            const difInDays = Math.floor(difInMilisec / dayInMilisec);
+            if (difInDays > 3) {
+                return notify;
+            }
+            return;
+        });
+        notificationsToDelete.map(async (notify) => {
+            const user = await UserMongo.findOne({
+                id: notify.userId
+            });
+            const notificationyExistsIndex = user.notifications.findIndex(notification => notification.name === notification.name);
+            if (notificationyExistsIndex != -1) {
+                user.notifications.splice(notificationyExistsIndex, 1);
+                await UserMongo.updateOne({
+                    id: user.id,
+                }, { notifications: user.notifications });
+            }
+        });
+        return;
     }
 }

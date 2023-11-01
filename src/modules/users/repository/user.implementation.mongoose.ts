@@ -1,4 +1,4 @@
-import { Interest } from "../../Interest/model/Interest.model.js";
+import { Interest, TargetValueProps } from "../../Interest/model/Interest.model.js";
 import { searches } from "../../currency/resolvers/query/searches.query.js";
 import { Notification } from "../../notification/model/notification.model.js";
 import { User } from "../model/user.model.js";
@@ -53,7 +53,10 @@ export class UserMongooseRepository implements IUserRepository {
   async showAll(): Promise<User[]> {
     return await UserMongo.find();
      
-    
+  }
+  async deleteALL(): Promise<void> {
+    await UserMongo.deleteMany();
+    return 
      
   }
   async getUserByToken(token: string): Promise<User> {
@@ -111,7 +114,12 @@ export class UserMongooseRepository implements IUserRepository {
 
 
   async updateUserInterests(user: User, interest: Interest): Promise<User> {
-    user.interests.push(interest)
+    const interestIndex = user.interests.findIndex(userInterest => interest.from === userInterest.from && interest.to === userInterest.to)
+    if(interestIndex === -1){
+      user.interests.push(interest)
+    } else {
+      user.interests[interestIndex] = interest
+    }
     await UserMongo.updateOne(
       {
         id: user.id,
@@ -122,7 +130,10 @@ export class UserMongooseRepository implements IUserRepository {
     return updatedUser;
   }
   
-  async updateInterestTargetValue(email: string, {from,to}: ChangeInterestProps, targetValue: number): Promise<Interest> {
+  async updateInterestTargetValue(email: string, {from,to}: ChangeInterestProps, targetValue: TargetValueProps): Promise<Interest> {
+    if(!targetValue.buy || !targetValue.sell){
+      throw new Error("Ops, faltou especificar se o valor é de compra ou venda ")
+    }
     const user = await this.getUserByEmail(email);
     const interestIndex = user.interests.findIndex(interest => {
       if(interest.from.toLowerCase() === from.toLowerCase() && interest.to.toLowerCase() === to.toLowerCase()){
@@ -178,6 +189,33 @@ export class UserMongooseRepository implements IUserRepository {
     const updatedUser = await this.getUserByEmail(user.email);
     const notificationUpdated = updatedUser.notifications.find(notify => notify.name === notification.name)
     return notificationUpdated;
+  }
+ async deleteUserExpiredNotifications(notifications: Notification[]): Promise<void> {
+   const notificationsToDelete = notifications.map(notify => {
+    const difInMilisec = Math.abs(+notify.createAt - +new Date());
+    const dayInMilisec = 1000 * 60 * 60 * 24; 
+    const difInDays = Math.floor(difInMilisec / dayInMilisec);
+    if(difInDays > 3){
+      return notify
+    }
+    return
+   })
+
+   notificationsToDelete.map(async notify => {
+     const user = await UserMongo.findOne({
+         id: notify.userId
+     })
+       const notificationyExistsIndex = user.notifications.findIndex(notification => notification.name === notification.name)
+       if(notificationyExistsIndex != -1){
+         user.notifications.splice(notificationyExistsIndex, 1)
+         await UserMongo.updateOne(
+           {
+             id: user.id,
+           },
+           { notifications: user.notifications }
+         );
+      }})
+    return ;
   }
 
 }

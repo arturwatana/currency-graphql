@@ -11,11 +11,14 @@ export const createInterest = async (_, { data }, ctx) => {
     const interest = Interest.create({
         from: data.from,
         to: data.to,
-        targetValue: data.targetValue
+        targetValue: {
+            buy: data.buy,
+            sell: data.sell
+        }
     });
     const user = await ctx.BaseContext.usersRepository.getUserByEmail(ctx.user.email);
     const interestAlreadyExist = user.interests.find(userInterest => {
-        if (userInterest.from === interest.from && userInterest.to === interest.to && userInterest.targetValue === interest.targetValue) {
+        if (userInterest.from === interest.from && userInterest.to === interest.to && userInterest.targetValue.buy === interest.targetValue.buy && userInterest.targetValue.sell === interest.targetValue.sell) {
             return interest;
         }
     });
@@ -23,7 +26,7 @@ export const createInterest = async (_, { data }, ctx) => {
         throw new Error("Interesse já adicionado com esse target");
     }
     const interestAlreadyExistWithTargetChanged = user.interests.find(userInterest => {
-        if (userInterest.from === interest.from && userInterest.to === interest.to && userInterest.targetValue != interest.targetValue) {
+        if (userInterest.from === interest.from && userInterest.to === interest.to && userInterest.targetValue.buy === interest.targetValue.buy || userInterest.targetValue.sell === interest.targetValue.sell) {
             return interest;
         }
     });

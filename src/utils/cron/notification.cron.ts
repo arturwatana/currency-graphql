@@ -4,8 +4,10 @@
 // import { CurrencyMemoryRepository } from "../../modules/currency/repositories/currency.implementation.repository.js";
 
   
-  // cron.schedule('0 8 * * *', async () => {
-  //   const memory = new CurrencyMemoryRepository(usersRepository)
-  //   const notify = await memory.updateTargets()
-  //    pusher.trigger("notifications", "new_notifications", notify)
-  //   });
+//   cron.schedule('*/1 * * * *', async () => {
+//     const memory = new CurrencyMemoryRepository(usersRepository)
+//     const notify = await memory.updateTargets()
+//     console.log(notify)
+//      pusher.trigger("notifications", "new_notifications", notify)
+//      console.log("notify")
+//     });

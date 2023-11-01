@@ -12,6 +12,8 @@ export class Currency {
         this.userId = data.userId || "";
         this.queryDate = data.queryDate;
         this.timestamp = data.timestamp;
+        this.buy = data.bid;
+        this.sell = data.ask;
     }
     static create(data) {
         const currency = new Currency(data);

@@ -17,6 +17,7 @@ export const getUserByToken = async (_, {data}: getUserByTokenProps, ctx: Contex
     })
     return{
       fullName: ctx.user.fullName,
-      email: ctx.user.email
+      email: ctx.user.email,
+      id: ctx.user.id
     }
 }

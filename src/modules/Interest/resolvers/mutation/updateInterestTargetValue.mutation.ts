@@ -1,11 +1,11 @@
 import { GraphQLError } from "graphql";
 import { ContextProps } from "../../../../index.js";
-import { IInterest, Interest } from "../../model/Interest.model.js";
+import { IInterest, Interest, TargetValueProps } from "../../model/Interest.model.js";
 
 interface UpdateInterestDTO {
     from: string
     to: string
-    targetValue: number
+    targetValue: TargetValueProps
 }
 
 interface UpdateInterestReq {

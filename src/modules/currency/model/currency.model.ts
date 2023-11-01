@@ -5,6 +5,8 @@ export type ICurrency = {
   codein: string
   name: string;
   high: string;
+  bid: string
+  ask: string
   low: string;
   userId: string;
   queryDate: Date;
@@ -23,6 +25,8 @@ export class Currency {
   userId?: string;
   queryDate: Date;
   timestamp: Date
+  buy: string
+  sell: string
 
   private constructor(data: ICurrency) {
     this.code = data.code
@@ -36,6 +40,8 @@ export class Currency {
     this.userId = data.userId || "";
     this.queryDate = data.queryDate;
     this.timestamp = data.timestamp
+    this.buy = data.bid
+    this.sell = data.ask
   }
 
   static create(data: ICurrency): Currency {
