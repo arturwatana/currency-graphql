@@ -6,6 +6,7 @@
   "scripts": {
     "compile": "tsc",
     "dev": "npm run compile && node ./dist/index.js",
+    "test": "vitest",
     "vercel-build": "echo hello"
   },
   "keywords": [],
@@ -34,7 +35,6 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.15",
-    "@types/jsonwebtoken": "^9.0.3",
-    "@vitest/coverage-v8": "^0.34.6"
+    "@types/jsonwebtoken": "^9.0.3"
   }
 }

@@ -45,7 +45,7 @@ type Last15DaysFromInterest {
   low: String!
   varBid: String!
   pctChange: String!
-  targetValue: Int!
+  targetValue: TargetValue!
   bid: String!
   ask: String!
   timestamp: String!
@@ -75,8 +75,8 @@ type User {
 }
 
 type TargetValue {
-  buy: Int!
-  sell: Int!
+  buy: Float!
+  sell: Float!
 }
 
 input UserDTO {
@@ -126,14 +126,14 @@ input LoginUserDTO{
 input InterestDTO{
   from: String!
   to: String!
-  buy: Int!
-  sell: Int!
+  buy: Float!
+  sell: Float!
 }
 input updateInterestTargetValueDTO{
   from: String!
   to: String!
-  buy: Int!
-  sell: Int!
+  buy: Float!
+  sell: Float!
 }
 input CurrencyReq {
   from: String!

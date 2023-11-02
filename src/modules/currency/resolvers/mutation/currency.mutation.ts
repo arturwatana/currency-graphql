@@ -35,7 +35,7 @@ export const createCurrency = async (_, {data}: CurrencyRequest, ctx: ContextPro
     currencyData.timestamp = formatUnixDate(+currencyData.timestamp)
     const currency: Currency = Currency.create(currencyData)
     user.searches.push(currency);
-    await ctx.BaseContext.usersRepository.updateUserSearches(user)
+    const userUpdated = await ctx.BaseContext.usersRepository.updateUserSearches(user)
     return currency;
   } catch (err) {
     throw new Error(err.response.data.message);

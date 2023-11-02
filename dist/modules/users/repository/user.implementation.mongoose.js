@@ -96,18 +96,15 @@ export class UserMongooseRepository {
         const updatedUser = await this.getUserByEmail(user.email);
         return updatedUser;
     }
-    async updateInterestTargetValue(email, { from, to }, targetValue) {
-        if (!targetValue.buy || !targetValue.sell) {
-            throw new Error("Ops, faltou especificar se o valor é de compra ou venda ");
-        }
+    async updateInterestTargetValue(email, interest) {
         const user = await this.getUserByEmail(email);
-        const interestIndex = user.interests.findIndex(interest => {
-            if (interest.from.toLowerCase() === from.toLowerCase() && interest.to.toLowerCase() === to.toLowerCase()) {
+        const interestIndex = user.interests.findIndex(userInterest => {
+            if (userInterest.from.toLowerCase() === interest.from.toLowerCase() && userInterest.to.toLowerCase() === interest.to.toLowerCase()) {
                 return interest;
             }
             return;
         });
-        user.interests[interestIndex].targetValue = targetValue;
+        user.interests[interestIndex] = interest;
         await UserMongo.updateOne({
             id: user.id,
         }, { interests: user.interests });

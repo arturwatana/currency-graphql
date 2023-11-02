@@ -12,7 +12,7 @@ export interface IUserRepository {
   updateUserInterests(user: User, interest: Interest): Promise<User>;
   updateUserNotifications(userId: string, notification: Notification): Promise<Notification>;
   deleteUserExpiredNotifications(notifications: Notification[]): Promise<void>;
-  updateInterestTargetValue(email: string, interestName: ChangeInterestProps, targetValue: TargetValueProps): Promise<Interest>
+  updateInterestTargetValue(email: string, interest: Interest): Promise<Interest>
   deleteCurrency(email: string, currencyId: string): Promise<User| null>
   deleteInterest(email: string, interestName: string): Promise<User| null>
   getUserInterests(user: User): Promise<Interest[]>

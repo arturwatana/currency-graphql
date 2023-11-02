@@ -1,5 +1,4 @@
 import { GraphQLError } from "graphql";
-import { Interest } from "../../model/Interest.model.js";
 export const updateInterest = async (_, { data }, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
@@ -8,7 +7,14 @@ export const updateInterest = async (_, { data }, ctx) => {
                 http: { status: 401 },
             },
         });
-    const interest = Interest.create(data);
-    const updatedUser = await ctx.BaseContext.usersRepository.updateUserInterests(ctx.user, interest);
+    const userInterests = await ctx.BaseContext.usersRepository.getUserInterests(ctx.user);
+    const interestInUser = userInterests.find(int => int.from === data.from && int.to === data.to);
+    if (!data.targetValue.buy && data.targetValue.sell) {
+        interestInUser.targetValue.sell = data.targetValue.sell;
+    }
+    else {
+        interestInUser.targetValue.buy = data.targetValue.buy;
+    }
+    const updatedUser = await ctx.BaseContext.usersRepository.updateUserInterests(ctx.user, interestInUser);
     return updatedUser;
 };

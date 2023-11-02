@@ -2,9 +2,6 @@ import { randomUUID } from "node:crypto";
 import { validateUserInfo } from "./validateUserInfo.js";
 export class User {
     constructor({ email, fullName, password }) {
-        if (!email || !fullName || !password) {
-            throw new Error("Ops, faltaram informacoes");
-        }
         validateUserInfo({ email, fullName, password });
         this.id = randomUUID();
         this.fullName = fullName;

@@ -23,9 +23,6 @@ export class User {
   notifications: Notification[]
 
   private constructor({ email, fullName, password }: IUser) {
-    if (!email || !fullName || !password) {
-      throw new Error("Ops, faltaram informacoes");
-    }
     validateUserInfo({email,fullName,password})
 
     this.id = randomUUID();

@@ -23,7 +23,7 @@ export class UserMemoryRepository {
     updateUserNotifications(userId, notification) {
         throw new Error("Method not implemented.");
     }
-    updateInterestTargetValue(userId, interestName, targetValue) {
+    updateInterestTargetValue(userId, interest) {
         throw new Error("Method not implemented.");
     }
     deleteCurrency(email, currencyId) {

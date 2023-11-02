@@ -29,7 +29,7 @@ export class UserMemoryRepository implements IUserRepository {
   updateUserNotifications(userId: string, notification: Notification): Promise<Notification> {
     throw new Error("Method not implemented.");
   }
-  updateInterestTargetValue(userId: string, interestName: ChangeInterestProps, targetValue: TargetValueProps): Promise<Interest> {
+  updateInterestTargetValue(userId: string, interest: Interest): Promise<Interest> {
     throw new Error("Method not implemented.");
   }
   deleteCurrency(email: string, currencyId: string): Promise<User> {

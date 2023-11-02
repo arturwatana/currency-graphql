@@ -22,7 +22,8 @@ export const createCurrency = async (_, { data }, ctx) => {
         currencyData.timestamp = formatUnixDate(+currencyData.timestamp);
         const currency = Currency.create(currencyData);
         user.searches.push(currency);
-        await ctx.BaseContext.usersRepository.updateUserSearches(user);
+        const userUpdated = await ctx.BaseContext.usersRepository.updateUserSearches(user);
+        console.log(userUpdated);
         return currency;
     }
     catch (err) {

@@ -24,6 +24,5 @@ export const updateInterestTargetValue = async (_, {data}: UpdateInterestReq,  c
         from: data.from,
         to: data.to
     }
-    const updateInterest = await ctx.BaseContext.usersRepository.updateInterestTargetValue(ctx.user.email, object , data.targetValue)
-    return updateInterest
+    return
 }
