@@ -56,6 +56,9 @@ export const createInterest = async (_,{data}: deleteInterestReq, ctx : ContextP
       }
       interestAlreadyExist.targetValue.buy = interest.targetValue.buy
     }
+    if(interestAlreadyExist.targetValue.buy === interest.targetValue.buy && interestAlreadyExist.targetValue.sell === interest.targetValue.sell){
+      throw new GraphQLError("Ops, esta conversao ja possui este target para compra e venda")
+    }
 
     if(interest.targetValue.buy != 0 && interest.targetValue.sell != 0 ){
       interestAlreadyExist.targetValue = interest.targetValue

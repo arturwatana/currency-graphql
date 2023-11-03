@@ -28,7 +28,8 @@ export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, c
             const last15FromUniqueInterest = {
                 ...res.data[0],
                 targetValue: interest.targetValue,
-                lastDays: last14Days   
+                lastDays: last14Days,
+                favorite:interest.favorite
             }
             return last15FromUniqueInterest
         }))

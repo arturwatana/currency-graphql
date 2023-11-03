@@ -45,6 +45,7 @@ type Last15DaysFromInterest {
   low: String!
   varBid: String!
   pctChange: String!
+  favorite: Boolean!
   targetValue: TargetValue!
   bid: String!
   ask: String!
@@ -129,6 +130,12 @@ input InterestDTO{
   buy: Float!
   sell: Float!
 }
+input FavoriteInterestDTO{
+  from: String!
+  to: String!
+  favorite: Boolean!
+
+}
 input updateInterestTargetValueDTO{
   from: String!
   to: String!
@@ -163,6 +170,7 @@ input CreateCurrencyByPeriodDTO {
     createFreeCurrency(data: CurrencyReq!): Currency!
     createInterest(data:InterestDTO!): Interest!
     updateInterest(data: InterestDTO!): User!
+    favoriteInterest(data: FavoriteInterestDTO!): User!
     updateInterestTargetValue(data: updateInterestTargetValueDTO!): Interest!
     deleteCurrency(currencyId: String!): User
     deleteInterest(data: DeleteInterestDTO!): User
