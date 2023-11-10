@@ -27,22 +27,20 @@ export class CurrencyMemoryRepository {
         });
         const uniqueInterests = [...new Set(interests)];
         try {
-            uniqueInterests.map(async (interest) => {
-                const words = interest.split("-");
-                const from = words[0];
-                const to = words[1];
-                const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${from}-${to}`);
-                const key = Object.keys(res.data);
-                const item = {
-                    high: res.data[key[0]].high,
-                    low: res.data[key[0]].low,
-                    timestamp: formatUnixDate(res.data[key[0]].timestamp),
-                    code: res.data[key[0]].code,
-                    codein: res.data[key[0]].codein
+            const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${uniqueInterests}`);
+            const keys = Object.keys(res.data);
+            const currenciesResponse = keys.map(key => {
+                return {
+                    high: res.data[key].high,
+                    low: res.data[key].low,
+                    timestamp: formatUnixDate(res.data[key].timestamp),
+                    code: res.data[key].code,
+                    codein: res.data[key].codein,
+                    bid: res.data[key].bid,
+                    ask: res.data[key].ask,
                 };
-                this.items.push(item);
-                return;
             });
+            currenciesResponse.map(res => this.items.push(res));
             return await this.getNotificationsTarget();
         }
         catch (err) {
@@ -61,10 +59,20 @@ export class CurrencyMemoryRepository {
                         }
                         interest.notifyAttempts++;
                         await this.userRepository.updateUserInterests(target, interest);
-                        if (+item.low <= interest.targetValue) {
+                        if (+item.ask >= interest.targetValue.sell) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
-                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue} uma mínima de ${+item.low}`,
+                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue.sell} com valor de venda ${+item.ask}  `,
+                                userId: target.userId,
+                            };
+                            const notify = Notification.create(data);
+                            await this.userRepository.updateUserNotifications(target.userId, notify);
+                            targetsToNotify.push(notify);
+                        }
+                        if (+item.bid <= interest.targetValue.buy) {
+                            const data = {
+                                name: `${interest.from}/${interest.to}`,
+                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue.buy} com valor de compra ${+item.bid}  `,
                                 userId: target.userId,
                             };
                             const notify = Notification.create(data);
