@@ -15,9 +15,10 @@ import {createFreeCurrency} from "./modules/currency/resolvers/mutation/freeCurr
 import { createInterest } from "./modules/Interest/resolvers/mutation/createInterest.mutation.js";
 import { createUser } from "./modules/users/resolvers/mutation/createUser.mutation.js";
 import { favoriteInterest } from "./modules/Interest/resolvers/mutation/favoriteInterest.mutation.js";
+import { getUserNotifications } from "./modules/users/resolvers/query/getUserNotifications.js";
 
 export const resolvers = {
-    Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests, getUserByToken },
+    Query: { searches, users, getLastSearchByName, getUserLast15DaysFromInterests, getUserByToken, getUserNotifications },
     Mutation: { createCurrency, createUser, login, deleteCurrency, favoriteInterest,  updateInterest, deleteInterest, updateInterestTargetValue, createFreeCurrency, createInterest },
   };
   

@@ -5,6 +5,7 @@ export interface INotification {
     name: string
     description: string
     userId: string
+    type: "buy" | "sell"
 }
 
 export class Notification{
@@ -12,13 +13,15 @@ export class Notification{
     description: string
     userId: string
     read: boolean
+    type: "buy" | "sell"
     createAt: Date
 
-    private constructor({description,name, userId}: INotification){
+    private constructor({description,name, userId, type}: INotification){
         this.name = name
         this.description = description
         this.read = false
         this.userId = userId
+        this.type = type
         this.createAt = new Date()
     }
 

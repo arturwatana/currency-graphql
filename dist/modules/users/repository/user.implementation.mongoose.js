@@ -98,13 +98,13 @@ export class UserMongooseRepository {
     }
     async updateInterestTargetValue(email, interest) {
         const user = await this.getUserByEmail(email);
-        const interestIndex = user.interests.findIndex(userInterest => {
-            if (userInterest.from.toLowerCase() === interest.from.toLowerCase() && userInterest.to.toLowerCase() === interest.to.toLowerCase()) {
-                return interest;
-            }
-            return;
-        });
-        user.interests[interestIndex] = interest;
+        const interestIndex = user.interests.findIndex(userInterest => userInterest.from.toLowerCase() === interest.from.toLowerCase() && userInterest.to.toLowerCase() === interest.to.toLowerCase());
+        if (interestIndex === -1) {
+            user.interests.push(interest);
+        }
+        else {
+            user.interests[interestIndex] = interest;
+        }
         await UserMongo.updateOne({
             id: user.id,
         }, { interests: user.interests });
@@ -119,7 +119,7 @@ export class UserMongooseRepository {
         const users = await UserMongo.find();
         const userInterests = users.map(user => {
             return {
-                userId: user.id,
+                user,
                 interests: user.interests
             };
         });
@@ -129,9 +129,9 @@ export class UserMongooseRepository {
         const user = await UserMongo.findOne({
             id: userId
         });
-        const notificationAlreadyExists = user.notifications.find(notify => notify.name === notification.name);
+        const notificationAlreadyExists = user.notifications.find(notify => notification.name === notify.name && notification.type === notify.type);
         if (notificationAlreadyExists) {
-            return notificationAlreadyExists;
+            return null;
         }
         user.notifications.push(notification);
         await UserMongo.updateOne({

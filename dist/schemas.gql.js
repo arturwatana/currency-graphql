@@ -34,7 +34,13 @@ type Notification {
   description: String!
   read: Boolean
   userId: String!
-  createdAt: Date!
+  createAt: Date!
+  type: String!
+}
+
+type InterestReached {
+  buy: Boolean!
+  sell: Boolean!
 }
 
 type Last15DaysFromInterest {
@@ -45,6 +51,7 @@ type Last15DaysFromInterest {
   low: String!
   varBid: String!
   pctChange: String!
+  reached: InterestReached!
   favorite: Boolean!
   targetValue: TargetValue!
   bid: String!
@@ -104,7 +111,7 @@ type Interest {
   targetValue: TargetValue!
   createdAt: Date!
   id: String!
-  reached: Boolean!
+  reached: InterestReached!
   favorite: Boolean!
   notifyAttempts: Int
 }
@@ -157,10 +164,16 @@ input CreateCurrencyByPeriodDTO {
   to: String
 }
 
+type GetUserNotifications{
+  userId: String!
+  notifications: [Notification!]!
+}
+
   type Query {
     searches:[Currency!]!
     getLastSearchByName(name: String!):Currency!
     getUserByToken:getUserDTO!
+    getUserNotifications:GetUserNotifications!
     getUserLast15DaysFromInterests:[Last15DaysFromInterest!]!
     users:[User!]!
     getNotify:[InterestToNotify!]!

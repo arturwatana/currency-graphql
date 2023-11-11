@@ -31,10 +31,13 @@ export class Interest {
     from: string
     to: string
     targetValue: TargetValueProps
-    customMessage: string
     favorite: boolean
     createdAt: Date
     notifyAttempts: number
+    reached: {
+        buy: boolean
+        sell: boolean
+    }
 
    private constructor(data: IInterest ){
 
@@ -49,8 +52,11 @@ export class Interest {
         this.to = data.to || "BRL"
         this.targetValue = data.targetValue || {buy: data.targetValue.buy != 0 ? data.targetValue.buy : 0, sell: data.targetValue.sell != 0 ? data.targetValue.sell : 0} 
         this.createdAt = new Date()
+        this.reached = {
+            buy: false,
+            sell: false
+        }
         this.favorite = false
-        this.notifyAttempts = 0
     }
 
     static create(data: IInterest){

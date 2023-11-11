@@ -1,6 +1,7 @@
 import axios from "axios";
 import { formatUnixDate } from "../../../utils/formatTimestamp/index.js";
 import { Notification } from "../../notification/model/notification.model.js";
+import { formatCoin } from "../../../utils/formatCoin/index.js";
 export class CurrencyMemoryRepository {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -18,7 +19,7 @@ export class CurrencyMemoryRepository {
         const interests = [];
         targets.map(target => {
             target.interests.map(interest => {
-                if (!interest.reached) {
+                if (!interest.reached.buy || !interest.reached.sell) {
                     interests.push(`${interest.from}-${interest.to}`);
                     return;
                 }
@@ -36,8 +37,8 @@ export class CurrencyMemoryRepository {
                     timestamp: formatUnixDate(res.data[key].timestamp),
                     code: res.data[key].code,
                     codein: res.data[key].codein,
-                    bid: res.data[key].bid,
-                    ask: res.data[key].ask,
+                    bid: Math.floor(res.data[key].bid * 100) / 100,
+                    ask: Math.floor(res.data[key].ask * 100) / 100,
                 };
             });
             currenciesResponse.map(res => this.items.push(res));
@@ -54,30 +55,35 @@ export class CurrencyMemoryRepository {
             for (const interest of target.interests) {
                 for (const item of this.items) {
                     if (interest.from === item.code && interest.to === item.codein) {
-                        if (interest.notifyAttempts >= 3) {
-                            return;
-                        }
-                        interest.notifyAttempts++;
-                        await this.userRepository.updateUserInterests(target, interest);
-                        if (+item.ask >= interest.targetValue.sell) {
+                        if (+item.ask >= interest.targetValue.sell && interest.targetValue.sell != 0) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
-                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue.sell} com valor de venda ${+item.ask}  `,
-                                userId: target.userId,
+                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${formatCoin(interest.targetValue.sell, interest.to)} com valor de venda ${formatCoin(+item.ask, interest.to)}`,
+                                userId: target.user.id,
+                                type: "sell"
                             };
                             const notify = Notification.create(data);
-                            await this.userRepository.updateUserNotifications(target.userId, notify);
-                            targetsToNotify.push(notify);
+                            const alreadyNotified = await this.userRepository.updateUserNotifications(target.user.id, notify);
+                            interest.reached.sell = true;
+                            await this.userRepository.updateUserInterests(target.user, interest);
+                            if (alreadyNotified != null) {
+                                targetsToNotify.push(notify);
+                            }
                         }
-                        if (+item.bid <= interest.targetValue.buy) {
+                        if (+item.bid <= interest.targetValue.buy && interest.targetValue.buy != 0) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
-                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o valor target de ${interest.targetValue.buy} com valor de compra ${+item.bid}  `,
-                                userId: target.userId,
+                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${formatCoin(interest.targetValue.buy, interest.to)} com valor de compra ${formatCoin(+item.bid, interest.to)}`,
+                                userId: target.user.id,
+                                type: "buy"
                             };
                             const notify = Notification.create(data);
-                            await this.userRepository.updateUserNotifications(target.userId, notify);
-                            targetsToNotify.push(notify);
+                            const alreadyNotified = await this.userRepository.updateUserNotifications(target.user.id, notify);
+                            interest.reached.buy = true;
+                            await this.userRepository.updateUserInterests(target.user, interest);
+                            if (alreadyNotified != null) {
+                                targetsToNotify.push(notify);
+                            }
                         }
                     }
                 }

@@ -12,6 +12,7 @@ type LoginReq = {
 }
 
 
+
 export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
   const user = await ctx.BaseContext.usersRepository.getUserByEmail(data.email.toLowerCase());
   if (!user) {
