@@ -6,7 +6,8 @@ cron.schedule('*/30 * * * * *', async () => {
     console.log("startando notify");
     const memory = new CurrencyMemoryRepository(usersRepository);
     const notify = await memory.updateTargets();
-    console.log(notify);
+    if (notify.length === 0) {
+        return;
+    }
     pusher.trigger("notifications", "new_notifications", notify);
-    console.log("notify");
 });
