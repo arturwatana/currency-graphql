@@ -1,6 +1,6 @@
-import { ContextProps } from "../../../../index.js";
-import { authService } from "../../../../utils/auth/authService.js";
-import { passwordHash } from "../../../../utils/hash/index.js";
+import { ContextProps } from "../../../../index";
+import { authService } from "../../../../utils/auth/authService";
+import { passwordHash } from "../../../../utils/hash/index";
 
 type LoginDTO = {
   email: string;

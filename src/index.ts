@@ -2,10 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer, BaseContext } from "@apollo/server";
 import { main } from "./utils/db/mongoose.start.js";
-import { typeDefs } from "./schemas.gql.js";
+import { typeDefs } from "./graphql/schema/index.js";
 import { passwordHash } from "./utils/hash/index.js";
 import { getTokenAndSetUser } from "./utils/context/index.js";
-import { resolvers } from "./resolvers.gql.js";
+import { resolvers } from "./graphql/resolvers/index.js";
 import { User } from "./modules/users/model/user.model.js";
 import { IUserRepository } from "./modules/users/repository/user.repository.js";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -15,7 +15,6 @@ import http from "http";
 import express from "express";
 import cors from "cors";
 import { usersRepository } from "./modules/users/repository/index.js";
-import "./utils/cron/notification.cron.js"
 
 type ServicesProps = {
   usersRepository: IUserRepository

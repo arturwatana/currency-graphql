@@ -1,3 +1,3 @@
-import { AuthJWT } from "./auth.jwt.js";
+import { AuthJWT } from "./auth.jwt";
 
 export const authService = new AuthJWT();

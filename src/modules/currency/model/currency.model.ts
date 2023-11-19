@@ -8,7 +8,7 @@ export type ICurrency = {
   bid: string
   ask: string
   low: string;
-  userId: string;
+  userId?: string;
   queryDate: Date;
   timestamp: Date
 }

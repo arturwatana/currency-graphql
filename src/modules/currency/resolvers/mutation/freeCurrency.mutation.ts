@@ -1,10 +1,7 @@
 import axios from "axios";
-import { GraphQLError } from "graphql";
-import { ContextProps } from "../../../../index.js";
-import { Currency, ICurrency } from "../../model/currency.model.js";
-import { Interest } from "../../../Interest/model/Interest.model.js";
-import { formatUnixDate } from "../../../../utils/formatTimestamp/index.js";
-import { CurrencyMemoryRepository } from "../../repositories/currency.implementation.repository.js";
+import { ContextProps } from "../../../../index";
+import { Currency, ICurrency } from "../../model/currency.model";
+import { formatUnixDate } from "../../../../utils/formatTimestamp/index";
 
 type CurrencyRequest = {
   data: {

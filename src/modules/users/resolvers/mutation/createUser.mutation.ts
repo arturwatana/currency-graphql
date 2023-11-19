@@ -1,5 +1,5 @@
-import { IUser, User } from "../../model/user.model.js";
-import { ContextProps } from "../../../../index.js";
+import { IUser, User } from "../../model/user.model";
+import { ContextProps } from "../../../../index";
 
 
 type CreateUserReq = {
