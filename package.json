@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "dev": "npm run compile && node ./dist/index.js",
+    "dev": "npm run compile && node ./dist/src/index.js",
     "cron": "node ./dist/utils/cron/notification.cron.js",
     "test": "jest",
     "vercel-build": "echo hello"

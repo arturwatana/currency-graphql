@@ -1,19 +1,18 @@
 import { randomUUID } from "node:crypto";
 export class Currency {
     constructor(data) {
-        this.code = data.code;
+        this.code = data.symbol;
         this.id = randomUUID();
-        this.from = data.code;
-        this.to = data.codein;
-        this.name = data.name;
-        this.high = data.high;
-        this.low = data.low;
+        this.from = data.from;
+        this.to = data.to;
+        this.high = data.highPrice;
+        this.low = data.lowPrice;
         this.create_date = new Date().toDateString();
         this.userId = data.userId || "";
-        this.queryDate = data.queryDate;
-        this.timestamp = data.timestamp;
-        this.buy = data.bid;
-        this.sell = data.ask;
+        this.buy = data.bidPrice;
+        this.sell = data.askPrice;
+        this.lastPrice = data.lastPrice;
+        this.varPrice = data.priceChangePercent;
     }
     static create(data) {
         const currency = new Currency(data);

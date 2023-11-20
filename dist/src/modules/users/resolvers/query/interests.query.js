@@ -11,13 +11,13 @@ export const getUserLast15DaysFromInterests = async (_, data, ctx) => {
     const userInterests = await ctx.BaseContext.usersRepository.getUserInterests(ctx.user);
     try {
         const last15DaysFromInterests = await Promise.all(userInterests.map(async (interest) => {
-            const res = await axios.get(`https://economia.awesomeapi.com.br/json/daily/${interest.from}-${interest.to}/15`);
-            const last14Days = await res.data.slice(1);
+            const res = await axios.get(`${process.env.BINANCE_CURRENCY_URL}${interest.from}${interest.to}`);
             const last15FromUniqueInterest = {
-                ...res.data[0],
+                ...res.data,
                 targetValue: interest.targetValue,
-                lastDays: last14Days,
-                favorite: interest.favorite
+                favorite: interest.favorite,
+                from: interest.from,
+                to: interest.to
             };
             return last15FromUniqueInterest;
         }));

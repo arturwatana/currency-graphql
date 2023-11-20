@@ -1,5 +1,5 @@
-import { authService } from "../../../../utils/auth/authService";
-import { passwordHash } from "../../../../utils/hash/index";
+import { authService } from "../../../../utils/auth/authService.js";
+import { passwordHash } from "../../../../utils/hash/index.js";
 export const login = async (_, { data }, ctx) => {
     const user = await ctx.BaseContext.usersRepository.getUserByEmail(data.email.toLowerCase());
     if (!user) {

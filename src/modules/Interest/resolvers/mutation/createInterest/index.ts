@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import { ContextProps } from "../../../../..";
-import { Interest } from "../../../model/Interest.model";
+import { Interest } from "../../../model/Interest.model.js";
 
 interface createInterestDTO {
     from: string
@@ -43,6 +43,9 @@ export const createInterest = async (_,{data}: deleteInterestReq, ctx : ContextP
       const interestUpdated = updatedUser.interests.find(int => int.from === interest.from && int.to === interest.to)
       return interestUpdated
     }
+    if(interestAlreadyExist.targetValue.buy === interest.targetValue.buy && interestAlreadyExist.targetValue.sell === interest.targetValue.sell){
+      throw new GraphQLError("Ops, esta conversao ja possui este target para compra e venda")
+    }
 
     if(interest.targetValue.buy === 0){
       if(interestAlreadyExist.targetValue.sell === interest.targetValue.sell){
@@ -55,9 +58,6 @@ export const createInterest = async (_,{data}: deleteInterestReq, ctx : ContextP
         throw new GraphQLError("Ops, esta conversao ja possui este target para compra")
       }
       interestAlreadyExist.targetValue.buy = interest.targetValue.buy
-    }
-    if(interestAlreadyExist.targetValue.buy === interest.targetValue.buy && interestAlreadyExist.targetValue.sell === interest.targetValue.sell){
-      throw new GraphQLError("Ops, esta conversao ja possui este target para compra e venda")
     }
 
     if(interest.targetValue.buy != 0 && interest.targetValue.sell != 0 ){

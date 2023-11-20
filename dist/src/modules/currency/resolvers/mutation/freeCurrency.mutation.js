@@ -1,16 +1,13 @@
 import axios from "axios";
-import { Currency } from "../../model/currency.model";
-import { formatUnixDate } from "../../../../utils/formatTimestamp/index";
+import { Currency } from "../../model/currency.model.js";
 export const createFreeCurrency = async (_, { data }, ctx) => {
     try {
-        const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.from}-${data.to || "BRL"}`);
-        const key = Object.keys(res.data);
+        const res = await axios.get(`${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`);
         const currencyData = {
-            ...res.data[key[0]],
-            queryDate: res.data[key[0]].create_date,
-            userId: "",
+            ...res.data,
+            to: data.to,
+            from: data.from,
         };
-        currencyData.timestamp = formatUnixDate(+currencyData.timestamp);
         const currency = Currency.create(currencyData);
         return currency;
     }

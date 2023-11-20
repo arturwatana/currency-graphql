@@ -1,32 +1,15 @@
 export const typeDefs = `
 type Currency {
-  code: String!
-  name: String!
   from: String!
   to: String!
   high: String!
   id: String
   buy: String!
   sell: String
-  queryDate: String!
+  lastPrice: String!
   low: String!
   create_date: String!
-  timestamp: Date!
-}
-
-type CurrencyPeriod {
-  code: String!
-  from: String!
-  to: String!
-  name: String!
-  high: String!
-  codein: String!
-  id: String
-  queryDate: String!
-  low: String!
-  create_date: String!
-  timestamp: Date!
-  otherDays: [Currency!]!
+  varPrice: String!
 }
 
 type Notification {
@@ -44,21 +27,18 @@ type InterestReached {
 }
 
 type Last15DaysFromInterest {
-  code: String!
-  codein: String!
-  name: String!
-  high: String!
-  low: String!
+  from: String!
+  to: String!
+  highPrice: String!
+  lowPrice: String!
+  lastPrice: String!
   varBid: String!
-  pctChange: String!
+  priceChangePercent: String!
   reached: InterestReached!
   favorite: Boolean!
   targetValue: TargetValue!
-  bid: String!
-  ask: String!
-  timestamp: String!
-  create_date: String!
-  lastDays: [LastDaysQuery!]!
+  bidPrice: String!
+  askPrice: String!
 }
 
 type LastDaysQuery{
@@ -113,7 +93,6 @@ type Interest {
   id: String!
   reached: InterestReached!
   favorite: Boolean!
-  notifyAttempts: Int
 }
 type InterestToNotify {
   from: String!

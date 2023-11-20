@@ -22,14 +22,14 @@ export const getUserLast15DaysFromInterests = async (_, data: getInterestsReq, c
     try {
         const last15DaysFromInterests = await Promise.all(userInterests.map(async (interest) => {
             const res: any = await axios.get(
-              `https://economia.awesomeapi.com.br/json/daily/${interest.from}-${interest.to}/15`
+              `${process.env.BINANCE_CURRENCY_URL}${interest.from}${interest.to}`
             );
-            const last14Days = await res.data.slice(1)
             const last15FromUniqueInterest = {
-                ...res.data[0],
+                ...res.data,
                 targetValue: interest.targetValue,
-                lastDays: last14Days,
-                favorite:interest.favorite
+                favorite:interest.favorite,
+                from: interest.from,
+                to: interest.to
             }
             return last15FromUniqueInterest
         }))

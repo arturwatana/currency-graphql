@@ -1,4 +1,4 @@
-import { User } from "../../model/user.model";
+import { User } from "../../model/user.model.js";
 export const createUser = async (_, { data }, ctx) => {
     const user = User.create(data);
     const userAlreadyExists = await ctx.BaseContext.usersRepository.getUserByEmail(user.email);

@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { Currency } from "../../currency/model/currency.model";
-import { Interest } from "../../Interest/model/Interest.model";
-import { validateUserInfo } from "./validateUserInfo";
-import { Notification } from "../../notification/model/notification.model";
+import { Currency } from "../../currency/model/currency.model.js";
+import { Interest } from "../../Interest/model/Interest.model.js";
+import { validateUserInfo } from "./validateUserInfo/index.js";
+import { Notification } from "../../notification/model/notification.model.js";
 
 export type IUser = {
   fullName: string;

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { GraphQLError } from "graphql";
-import { Currency } from "../../model/currency.model";
-import { formatUnixDate } from "../../../../utils/formatTimestamp/index";
+import { Currency } from "../../model/currency.model.js";
 export const createCurrency = async (_, { data }, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
@@ -11,18 +10,17 @@ export const createCurrency = async (_, { data }, ctx) => {
             },
         });
     try {
-        const res = await axios.get(`https://economia.awesomeapi.com.br/json/last/${data.from}-${data.to || "BRL"}`);
-        const key = Object.keys(res.data);
+        const res = await axios.get(`${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`);
         const user = ctx.user;
         const currencyData = {
-            ...res.data[key[0]],
-            queryDate: res.data[key[0]].create_date,
+            ...res.data,
+            to: data.to,
+            from: data.from,
             userId: user.id,
         };
-        currencyData.timestamp = formatUnixDate(+currencyData.timestamp);
         const currency = Currency.create(currencyData);
         user.searches.push(currency);
-        const userUpdated = await ctx.BaseContext.usersRepository.updateUserSearches(user);
+        await ctx.BaseContext.usersRepository.updateUserSearches(user);
         return currency;
     }
     catch (err) {

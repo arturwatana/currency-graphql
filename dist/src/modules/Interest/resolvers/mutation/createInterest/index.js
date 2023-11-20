@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Interest } from "../../../model/Interest.model";
+import { Interest } from "../../../model/Interest.model.js";
 export const createInterest = async (_, { data }, ctx) => {
     if (!ctx.user)
         throw new GraphQLError("User is not authenticated", {
@@ -27,6 +27,9 @@ export const createInterest = async (_, { data }, ctx) => {
         const interestUpdated = updatedUser.interests.find(int => int.from === interest.from && int.to === interest.to);
         return interestUpdated;
     }
+    if (interestAlreadyExist.targetValue.buy === interest.targetValue.buy && interestAlreadyExist.targetValue.sell === interest.targetValue.sell) {
+        throw new GraphQLError("Ops, esta conversao ja possui este target para compra e venda");
+    }
     if (interest.targetValue.buy === 0) {
         if (interestAlreadyExist.targetValue.sell === interest.targetValue.sell) {
             throw new GraphQLError("Ops, esta conversao ja possui este target para venda");
@@ -38,9 +41,6 @@ export const createInterest = async (_, { data }, ctx) => {
             throw new GraphQLError("Ops, esta conversao ja possui este target para compra");
         }
         interestAlreadyExist.targetValue.buy = interest.targetValue.buy;
-    }
-    if (interestAlreadyExist.targetValue.buy === interest.targetValue.buy && interestAlreadyExist.targetValue.sell === interest.targetValue.sell) {
-        throw new GraphQLError("Ops, esta conversao ja possui este target para compra e venda");
     }
     if (interest.targetValue.buy != 0 && interest.targetValue.sell != 0) {
         interestAlreadyExist.targetValue = interest.targetValue;

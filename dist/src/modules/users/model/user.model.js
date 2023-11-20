@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { validateUserInfo } from "./validateUserInfo";
+import { validateUserInfo } from "./validateUserInfo/index.js";
 export class User {
     constructor({ email, fullName, password }) {
         validateUserInfo({ email, fullName, password });

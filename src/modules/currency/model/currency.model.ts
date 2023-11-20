@@ -1,16 +1,16 @@
 import { randomUUID } from "node:crypto";
 
 export type ICurrency = {
-  code: string;
-  codein: string
-  name: string;
-  high: string;
-  bid: string
-  ask: string
-  low: string;
+  symbol: string;
+  priceChangePercent: string
+  lastPrice: string;
+  bidPrice: string;
+  askPrice: string
+  highPrice: string
+  lowPrice: string;
   userId?: string;
-  queryDate: Date;
-  timestamp: Date
+  to: string
+  from: string
 }
 
 export class Currency {
@@ -18,30 +18,28 @@ export class Currency {
   from: string;
   code: string
   to: string
-  name: string;
+  varPrice: string
   high: string;
   low: string;
   create_date: string;
   userId?: string;
-  queryDate: Date;
-  timestamp: Date
   buy: string
   sell: string
+  lastPrice: string
 
   private constructor(data: ICurrency) {
-    this.code = data.code
+    this.code = data.symbol
     this.id = randomUUID()
-    this.from = data.code
-    this.to = data.codein
-    this.name = data.name
-    this.high = data.high
-    this.low = data.low
+    this.from = data.from
+    this.to = data.to
+    this.high = data.highPrice
+    this.low = data.lowPrice
     this.create_date = new Date().toDateString()
     this.userId = data.userId || ""
-    this.queryDate = data.queryDate
-    this.timestamp = data.timestamp
-    this.buy = data.bid
-    this.sell = data.ask
+    this.buy = data.bidPrice
+    this.sell = data.askPrice
+    this.lastPrice = data.lastPrice
+    this.varPrice = data.priceChangePercent
   }
 
   static create(data: ICurrency): Currency {

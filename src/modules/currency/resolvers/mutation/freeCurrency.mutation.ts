@@ -1,7 +1,6 @@
 import axios from "axios";
-import { ContextProps } from "../../../../index";
-import { Currency, ICurrency } from "../../model/currency.model";
-import { formatUnixDate } from "../../../../utils/formatTimestamp/index";
+import { ContextProps } from "../../../../index.js";
+import { Currency, ICurrency } from "../../model/currency.model.js";
 
 type CurrencyRequest = {
   data: {
@@ -13,17 +12,15 @@ type CurrencyRequest = {
 export const createFreeCurrency = async (_, {data}: CurrencyRequest, ctx: ContextProps) => {
   try {
     const res = await axios.get(
-      `https://economia.awesomeapi.com.br/json/last/${data.from}-${data.to || "BRL"}`
+      `${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`
     );
-    const key: string[] = Object.keys(res.data);
-    const currencyData: ICurrency =  {
-      ...res.data[key[0]],
-      queryDate: res.data[key[0]].create_date,
-      userId: "",
-    };
-    currencyData.timestamp = formatUnixDate(+currencyData.timestamp)
-    const currency: Currency = Currency.create(currencyData)
-    return currency;
+      const currencyData: ICurrency =  {
+        ...res.data,
+        to: data.to,
+        from: data.from,
+      };
+      const currency: Currency = Currency.create(currencyData)
+      return currency;
   } catch (err) {
     throw new Error(err.response.data.message);
   }
