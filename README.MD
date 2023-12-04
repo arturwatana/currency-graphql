@@ -2,7 +2,7 @@
 
 A API CoinPulse é uma interface GraphQL que permite aos usuários realizar consultas e operações relacionadas a moedas e usuários. Ela fornece acesso a informações sobre moedas e permite que os usuários façam buscas e mantenham perfis de usuário.
 
-A consulta de valores é feita a partir da API: https://docs.awesomeapi.com.br/api-de-moedas
+A consulta de valores é feita a partir da API de consulta da Binance.
 
 ## Dependências
 
