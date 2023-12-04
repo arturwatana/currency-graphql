@@ -26,11 +26,22 @@ export class UserMongooseRepository implements IUserRepository {
       }
       return interest
     })
+    const userWithoutNotificationsByDeletedInterest = user.notifications.filter(notify => {
+      if(notify.name === `${interestFrom}/${interestTo}`){
+        return
+      }
+      return notify
+    })
+
      await UserMongo.updateOne(
       {
         id: user.id,
       },
-      { interests: userInterestsWithouDeletedInterest }
+      { 
+        interests: userInterestsWithouDeletedInterest,
+        notifications: userWithoutNotificationsByDeletedInterest
+      },
+      
     );
     const updatedUser = await this.getUserByEmail(email)
     return updatedUser

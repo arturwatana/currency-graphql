@@ -51,7 +51,7 @@ app.use(
   cors<cors.CorsRequest>(),
   expressMiddleware(server, {
     context: async ({ req }) => {
-        const user = await getTokenAndSetUser(req.headers.authorization)
+      const user = await getTokenAndSetUser(req.headers.authorization)
         return { user, BaseContext: services };
     }
   }),

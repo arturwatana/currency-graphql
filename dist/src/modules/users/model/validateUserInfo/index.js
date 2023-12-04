@@ -1,4 +1,5 @@
 export function validateUserInfo({ email, password, fullName }) {
+    const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     if (!fullName) {
         throw new Error("Ops, ficou faltando o seu nome");
     }
@@ -8,11 +9,8 @@ export function validateUserInfo({ email, password, fullName }) {
     if (!email) {
         throw new Error("Ops, ficou faltando o email");
     }
-    if (email.length < 4) {
-        throw new Error("Ops, preciso de um email valido");
-    }
-    if (email.includes("@") === false) {
-        throw new Error("Ops, preciso de um email valido");
+    if (!emailValidation.test(email)) {
+        throw new Error("Ops, precisamos de um e-mail valido");
     }
     if (!password) {
         throw new Error("Ops, ficou faltando sua senha");

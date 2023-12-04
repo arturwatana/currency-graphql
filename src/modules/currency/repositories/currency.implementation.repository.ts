@@ -25,34 +25,28 @@ export class CurrencyMemoryRepository implements ICurrencyRepository {
   async updateTargets(){
     const targets = await this.userRepository.getUsersTargets()
     const interests = []
-     targets.map(target => {
-      target.interests.map(interest => {
-        if(!interest.reached.buy || !interest.reached.sell){
-          interests.push(`${interest.from}-${interest.to}`)
-          return
+     targets.forEach(target => {
+      target.interests.forEach(interest => {
+          const alreadyExists = interests.find(int => int.from === interest.from && int.to === interest.to)
+          if(!alreadyExists){
+            interests.push({
+              from: interest.from,
+              to: interest.to
+            })
         }
-        return
       })
     })
-    const uniqueInterests = [...new Set(interests)]
     try {
-        const res = await axios.get(
-          `https://economia.awesomeapi.com.br/json/last/${uniqueInterests}`
-        );
-        const keys: string[] = Object.keys(res.data);
-        const currenciesResponse = keys.map(key => {
-          return {
-            high: res.data[key].high,
-            low: res.data[key].low,
-            timestamp: formatUnixDate(res.data[key].timestamp),
-            code: res.data[key].code,
-            codein: res.data[key].codein,
-            bid:  Math.floor(res.data[key].bid * 100) / 100,
-            ask:  Math.floor(res.data[key].ask * 100) / 100,
-          }
-        })
-        currenciesResponse.map(res => this.items.push(res))
-
+      for (const interest of interests) {
+          const res = await axios.get(`${process.env.BINANCE_CURRENCY_URL}${interest.from}${interest.to}`);
+          const data = {
+            ask: res.data.askPrice,
+            bid: res.data.bidPrice,
+            from: interest.from,
+            to: interest.to
+          };
+          this.items.push(data);
+      }
         return await this.getNotificationsTarget();
       } catch (err) {
         throw new Error(err.response.data.message);
@@ -65,11 +59,11 @@ export class CurrencyMemoryRepository implements ICurrencyRepository {
     for (const target of targets) {
       for (const interest of target.interests) {
         for (const item of this.items) {
-          if (interest.from === item.code && interest.to === item.codein) {
+          if (interest.from === item.from && interest.to === item.to) {
             if (+item.ask >= interest.targetValue.sell && interest.targetValue.sell != 0) {
               const data: INotification = {
                 name: `${interest.from}/${interest.to}`,
-                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${formatCoin(interest.targetValue.sell, interest.to)} com valor de venda ${formatCoin(+item.ask, interest.to)}`,
+                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.sell} ${interest.to} com valor de venda ${item.ask} ${interest.to}`,
                 userId: target.user.id,
                 type: "sell"
               };
@@ -84,7 +78,7 @@ export class CurrencyMemoryRepository implements ICurrencyRepository {
             if (+item.bid <= interest.targetValue.buy && interest.targetValue.buy != 0) {
               const data: INotification  = {
                 name: `${interest.from}/${interest.to}`,
-                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${formatCoin(interest.targetValue.buy, interest.to)} com valor de compra ${formatCoin(+item.bid, interest.to)}`,
+                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.buy} ${interest.to} com valor de compra ${item.bid} ${interest.to}`,
                 userId: target.user.id,
                 type: "buy"
               };

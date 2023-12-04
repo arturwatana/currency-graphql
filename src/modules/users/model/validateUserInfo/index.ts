@@ -3,21 +3,22 @@ import { IUser } from "../user.model.js";
 
 
 export function validateUserInfo({email,password,fullName}: IUser){
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+
     if(!fullName){
         throw new Error("Ops, ficou faltando o seu nome")
     }
     if(fullName.length <= 2){
         throw new Error("Seu nome precisa ter mais que 2 caracteres")
     }
+
     if(!email){
         throw new Error("Ops, ficou faltando o email")
     }
-    if(email.length < 4){
-        throw new Error("Ops, preciso de um email valido")
+    if(!emailValidation.test(email)){
+        throw new Error("Ops, precisamos de um e-mail valido")
     }
-    if(email.includes("@") === false){
-        throw new Error("Ops, preciso de um email valido")
-    }
+
     if(!password){
         throw new Error("Ops, ficou faltando sua senha")
     }
