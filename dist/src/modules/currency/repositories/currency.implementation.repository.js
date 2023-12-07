@@ -51,7 +51,6 @@ export class CurrencyMemoryRepository {
                 for (const item of this.items) {
                     if (interest.from === item.from && interest.to === item.to) {
                         if (+item.ask >= interest.targetValue.sell && interest.targetValue.sell != 0) {
-                            console.log(+item.ask);
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
                                 description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.sell} ${interest.to} com valor de venda ${item.ask} ${interest.to}`,
