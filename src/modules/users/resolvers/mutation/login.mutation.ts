@@ -14,6 +14,7 @@ type LoginReq = {
 
 
 export const login = async (_, { data }: LoginReq, ctx: ContextProps) => {
+  console.log("oi")
   const user = await ctx.BaseContext.usersRepository.getUserByEmail(data.email.toLowerCase());
   if (!user) {
     throw new Error("Usuário ou senha incorretos");

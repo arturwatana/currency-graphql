@@ -14,6 +14,8 @@ export const createFreeCurrency = async (_, {data}: CurrencyRequest, ctx: Contex
     const res = await axios.get(
       `${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`
     );
+    console.log(`${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`)
+    console.log(res)
       const currencyData: ICurrency =  {
         ...res.data,
         to: data.to,

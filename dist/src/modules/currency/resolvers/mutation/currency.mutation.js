@@ -10,6 +10,7 @@ export const createCurrency = async (_, { data }, ctx) => {
             },
         });
     try {
+        console.log(`${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`);
         const res = await axios.get(`${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`);
         const user = ctx.user;
         const currencyData = {
@@ -21,6 +22,7 @@ export const createCurrency = async (_, { data }, ctx) => {
         const currency = Currency.create(currencyData);
         user.searches.push(currency);
         await ctx.BaseContext.usersRepository.updateUserSearches(user);
+        console.log(currency);
         return currency;
     }
     catch (err) {

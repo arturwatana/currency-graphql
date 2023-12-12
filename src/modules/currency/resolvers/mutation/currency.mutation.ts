@@ -24,6 +24,8 @@ export const createCurrency = async (_, {data}: CurrencyRequest, ctx: ContextPro
     const res = await axios.get(
       `${process.env.BINANCE_CURRENCY_URL}${data.from}${data.to}`
     );
+    console.log("response")
+    console.log(res)
     const user = ctx.user;
     const currencyData: ICurrency =  {
       ...res.data,
@@ -37,6 +39,7 @@ export const createCurrency = async (_, {data}: CurrencyRequest, ctx: ContextPro
     console.log(currency)
     return currency;
   } catch (err) {
+    console.log(err)
     throw new Error(err.response.data.message);
   }
 };
