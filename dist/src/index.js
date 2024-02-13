@@ -12,6 +12,7 @@ import http from "http";
 import express from "express";
 import cors from "cors";
 import { usersRepository } from "./modules/users/repository/index.js";
+import "./utils/cron/notification.cron.js";
 const app = express();
 app.use(cors());
 app.use(express.json());

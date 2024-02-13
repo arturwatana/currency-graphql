@@ -53,7 +53,7 @@ export class CurrencyMemoryRepository {
                         if (+item.ask >= interest.targetValue.sell && interest.targetValue.sell != 0) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
-                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.sell} ${interest.to} com valor de venda ${item.ask} ${interest.to}`,
+                                description: `Oba! Sua conversão rastreada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.sell} ${interest.to} com valor de venda ${+item.ask >= 1 ? parseFloat(item.ask).toFixed(3) : +item.ask} ${interest.to}`,
                                 userId: target.user.id,
                                 type: "sell"
                             };
@@ -68,7 +68,7 @@ export class CurrencyMemoryRepository {
                         if (+item.bid <= interest.targetValue.buy && interest.targetValue.buy != 0) {
                             const data = {
                                 name: `${interest.from}/${interest.to}`,
-                                description: `Oba! Sua conversão trackeada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.buy} ${interest.to} com valor de compra ${item.bid} ${interest.to}`,
+                                description: `Oba! Sua conversão rastreada ${interest.from}/${interest.to} atingiu o target de ${interest.targetValue.buy} ${interest.to} com valor de compra ${+item.bid >= 1 ? parseFloat(item.bid).toFixed(3) : +item.bid} ${interest.to}`,
                                 userId: target.user.id,
                                 type: "buy"
                             };

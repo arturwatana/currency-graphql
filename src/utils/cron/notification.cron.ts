@@ -4,11 +4,9 @@ import cron from "node-cron"
 import { usersRepository } from "../../modules/users/repository/index.js";
 
 
-  cron.schedule('*/30 * * * * *', async () => {
-    console.log("start")
+  cron.schedule('*/10 * * * * *', async () => {
       const memory = new CurrencyMemoryRepository(usersRepository)
       const notify = await memory.updateTargets()
-      console.log(notify)
       if(notify.length === 0){
         return
       }
